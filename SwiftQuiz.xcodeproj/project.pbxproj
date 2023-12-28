@@ -11,6 +11,11 @@
 		EA7EED992B3B762300151B1E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EED982B3B762300151B1E /* ContentView.swift */; };
 		EA7EED9B2B3B762500151B1E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA7EED9A2B3B762500151B1E /* Assets.xcassets */; };
 		EA7EED9E2B3B762500151B1E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA7EED9D2B3B762500151B1E /* Preview Assets.xcassets */; };
+		EA7EEDA52B3B96BC00151B1E /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EEDA42B3B96BC00151B1E /* LeaderboardView.swift */; };
+		EA7EEDA82B3C313500151B1E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EEDA72B3C313500151B1E /* HomeView.swift */; };
+		EA7EEDAA2B3C57A800151B1E /* BeforeStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EEDA92B3C57A800151B1E /* BeforeStartView.swift */; };
+		EA7EEDAC2B3C5D9B00151B1E /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EEDAB2B3C5D9B00151B1E /* QuizView.swift */; };
+		EA7EEDAE2B3CFB1700151B1E /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EEDAD2B3CFB1700151B1E /* UserView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +24,11 @@
 		EA7EED982B3B762300151B1E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EA7EED9A2B3B762500151B1E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA7EED9D2B3B762500151B1E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		EA7EEDA42B3B96BC00151B1E /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
+		EA7EEDA72B3C313500151B1E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		EA7EEDA92B3C57A800151B1E /* BeforeStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeforeStartView.swift; sourceTree = "<group>"; };
+		EA7EEDAB2B3C5D9B00151B1E /* QuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizView.swift; sourceTree = "<group>"; };
+		EA7EEDAD2B3CFB1700151B1E /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +61,8 @@
 		EA7EED952B3B762300151B1E /* SwiftQuiz */ = {
 			isa = PBXGroup;
 			children = (
+				EA7EEDA62B3C2BF700151B1E /* Views */,
 				EA7EED962B3B762300151B1E /* SwiftQuizApp.swift */,
-				EA7EED982B3B762300151B1E /* ContentView.swift */,
 				EA7EED9A2B3B762500151B1E /* Assets.xcassets */,
 				EA7EED9C2B3B762500151B1E /* Preview Content */,
 			);
@@ -65,6 +75,19 @@
 				EA7EED9D2B3B762500151B1E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		EA7EEDA62B3C2BF700151B1E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EA7EEDA42B3B96BC00151B1E /* LeaderboardView.swift */,
+				EA7EED982B3B762300151B1E /* ContentView.swift */,
+				EA7EEDA72B3C313500151B1E /* HomeView.swift */,
+				EA7EEDA92B3C57A800151B1E /* BeforeStartView.swift */,
+				EA7EEDAB2B3C5D9B00151B1E /* QuizView.swift */,
+				EA7EEDAD2B3CFB1700151B1E /* UserView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,7 +161,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA7EED992B3B762300151B1E /* ContentView.swift in Sources */,
+				EA7EEDA82B3C313500151B1E /* HomeView.swift in Sources */,
+				EA7EEDA52B3B96BC00151B1E /* LeaderboardView.swift in Sources */,
 				EA7EED972B3B762300151B1E /* SwiftQuizApp.swift in Sources */,
+				EA7EEDAA2B3C57A800151B1E /* BeforeStartView.swift in Sources */,
+				EA7EEDAC2B3C5D9B00151B1E /* QuizView.swift in Sources */,
+				EA7EEDAE2B3CFB1700151B1E /* UserView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,8 +306,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -287,9 +316,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = t0nysantiago.SwiftQuiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -307,8 +339,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -316,9 +349,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = t0nysantiago.SwiftQuiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
