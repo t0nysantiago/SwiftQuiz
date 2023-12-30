@@ -19,7 +19,7 @@ struct LeaderboardView: View {
                     
                     Image(systemName: "chevron.backward.circle")
                         .font(.system(size: 30))
-                        .foregroundStyle(Color.appGreen)
+                        .foregroundStyle(Color.appOrange)
                         .onTapGesture {
                             presentationMode.wrappedValue.dismiss()
                         }
@@ -48,7 +48,7 @@ struct LeaderboardView: View {
                             }
                             .frame(width: 110, height: 40)
                             .background(RoundedRectangle(cornerRadius: 15.0))
-                            .foregroundStyle(timing == selectedTime ? Color.appGreen : Color.clear)
+                            .foregroundStyle(timing == selectedTime ? Color.appOrange : Color.clear)
                         }
                     }
                 }
@@ -146,7 +146,7 @@ struct RankingView: View {
             
             Circle()
                 .frame(width: radius, height: radius)
-                .foregroundStyle(.appGreen)
+                .foregroundStyle(.appOrange)
                 .padding(.horizontal, 5)
             
             Text("Username People")
@@ -158,33 +158,6 @@ struct RankingView: View {
     }
 }
 
-struct FooterView: View {
-    var body: some View {
-        HStack (alignment: .center) {
-            Spacer()
-            
-            Image(systemName: "person.fill")
-                .font(.system(size: 30))
-                .foregroundStyle(.black)
-            
-            Spacer()
-            
-            Image(systemName: "play.circle")
-                .font(.system(size: 45))
-                .foregroundStyle(.black)
-            
-            Spacer()
-            
-            Image(systemName: "trophy.fill")
-                .font(.system(size: 25))
-                .foregroundStyle(.appGreen)
-            
-            Spacer()
-        }
-    }
-}
-
-
 enum SortTime: String, CaseIterable, Identifiable {
     case today = "Today", week = "Week", alltime = "All Time"
     var id: Self { self }
@@ -193,8 +166,4 @@ enum SortTime: String, CaseIterable, Identifiable {
 enum Ranking: Int, CaseIterable, Identifiable {
     case first = 1, second, third
     var id: Self { self }
-}
-
-#Preview {
-    LeaderboardView()
 }

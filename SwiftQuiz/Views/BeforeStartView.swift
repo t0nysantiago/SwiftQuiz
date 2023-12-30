@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BeforeStartView: View {
+    @State private var triviaQuestions: [TriviaQuestion] = []
     @State private var isQuizViewActive = false
     @Environment(\.presentationMode) var presentationMode
     @Binding var backgroundColorChoosed: Color
@@ -53,7 +54,7 @@ struct BeforeStartView: View {
                     Spacer()
                     
                     NavigationLink(
-                        destination: QuizView(backgroundColorChoosed: .constant(backgroundColorChoosed)),
+                        destination: QuizView(triviaQuestions: $triviaQuestions, backgroundColorChoosed: .constant(backgroundColorChoosed)),
                         isActive: $isQuizViewActive,
                         label: {
                             EmptyView()
@@ -61,6 +62,7 @@ struct BeforeStartView: View {
                     )
                     
                     Button(action: {
+                        print("entrouuuuu")
                         isQuizViewActive = true
                     }) {
                         ZStack{
@@ -80,6 +82,16 @@ struct BeforeStartView: View {
                 }
                 .padding(.horizontal, 20)
             }
+            .onAppear {
+                let triviaModel = TriviaModel()
+                triviaModel.fetchTriviaQuestions(amount: questionsByDifficulty(for: difficult), difficult: difficult) { questions in
+                    if let questions = questions {
+                        DispatchQueue.main.async {
+                            self.triviaQuestions = questions
+                        }
+                    }
+                }
+            }
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
@@ -96,6 +108,17 @@ func difficultyTitle(for difficulty: Difficult) -> String {
         return "Level three"
     }
 }
+
+func questionsByDifficulty(for difficult: Difficult) -> Int {
+    switch difficult {
+    case .easy:
+        return 20
+    case .medium:
+        return 30
+    case .hard:
+        return 50
+    }
+}
     
 func difficultyDescription(for difficulty: Difficult) -> String {
     switch difficulty {
@@ -104,10 +127,10 @@ func difficultyDescription(for difficulty: Difficult) -> String {
     case .medium:
         return "In this phase you will have 30 questions on general topics and to move on to the next phase you will need to get 20 questions correct."
     case .hard:
-        return "In this phase you will have 50 questions on general topics and to move on to the next phase you will need to get 45 questions correct."
+        return "In this phase you will have 50 questions on general topics and to complete this phase you will need to get 45 questions correct."
     }
 }
 
 #Preview {
-    BeforeStartView(backgroundColorChoosed: .constant(.appGreen), logoImage: .constant("history"), difficult: .constant(Difficult.easy))
+    BeforeStartView(backgroundColorChoosed: .constant(Color.blue), logoImage: .constant("history"), difficult: .constant(Difficult.easy))
 }

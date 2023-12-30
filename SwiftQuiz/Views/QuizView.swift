@@ -8,8 +8,21 @@
 import SwiftUI
 
 struct QuizView: View {
+    @Binding var triviaQuestions: [TriviaQuestion]
     @Environment(\.presentationMode) var presentationMode
     @Binding var backgroundColorChoosed: Color
+    @State private var currentQuestionIndex = 0
+    @State private var selectedAnswerIndex: Int? = nil
+    @State private var answeredCorrectly: Bool? = nil
+    
+    var currentQuestion: TriviaQuestion? {
+        guard triviaQuestions.indices.contains(currentQuestionIndex) else {
+            return nil
+        }
+        return triviaQuestions[currentQuestionIndex]
+    }
+
+    
     var body: some View {
         NavigationView {
             ZStack (alignment: .leading) {
@@ -41,36 +54,64 @@ struct QuizView: View {
                             .frame(width: 300, height: 250)
                         Spacer()
                     }
+                    
                     Spacer()
                     
-                    Text("5 / 10")
+                    Text("\(currentQuestionIndex + 1) / \(triviaQuestions.count)")
                         .font(.system(size: 14, design: .rounded))
                         .bold()
                         .foregroundColor(.white)
-                    Text("Some Question to ask ?")
-                        .font(.system(size: 28, design: .rounded))
-                        .bold()
-                        .foregroundStyle(Color.appWhite)
                     
-                    ForEach (0..<4) { index in
-                        Button(action: {
-                            
-                        }) {
-                            ZStack{
-                                Text("Answer")
-                                    .foregroundColor(.black)
-                                    .font(.system(size: 18, design: .rounded))
-                                    .cornerRadius(15)
-                            }
-                            .frame(width: 350, height: 50)
-                            .background(RoundedRectangle(cornerRadius: 15.0))
+                    if let currentQuestion = currentQuestion {
+                        let shuffledAnswers = shuffleAnswers(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
+                        Text(currentQuestion.question)
+                            .font(.system(size: 28, design: .rounded))
+                            .bold()
                             .foregroundStyle(Color.appWhite)
+                            .padding(.top, 10)
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            ForEach(0..<shuffledAnswers.count, id: \.self) { index in
+                                Button(action: {
+                                    if answeredCorrectly == nil {
+                                        self.selectedAnswerIndex = index
+                                        
+                                        let selectedAnswer = shuffledAnswers[index]
+                                        let isCorrect = selectedAnswer == currentQuestion.correctAnswer
+                                        
+                                        self.answeredCorrectly = isCorrect ? true : false
+                                        
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            if self.answeredCorrectly != nil {
+                                                self.currentQuestionIndex += 1
+                                                self.selectedAnswerIndex = nil
+                                                self.answeredCorrectly = nil
+                                            }
+                                        }
+                                    }
+                                }) {
+                                    Text(shuffledAnswers[index])
+                                        .foregroundColor(.black)
+                                        .font(.system(size: 18, design: .rounded))
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .fill(
+                                                    index == selectedAnswerIndex && answeredCorrectly != nil ?
+                                                    (answeredCorrectly == true ? Color.green : Color.red) :
+                                                        Color.white
+                                                )
+                                        )
+                                }
+                            }
                         }
+                    } else {
+                        Text("Loading...")
+                            .foregroundColor(.white)
                     }
                     
-                    
                     Spacer()
-                    
                 }
                 .padding(.horizontal, 30)
             }
@@ -78,6 +119,13 @@ struct QuizView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
     }
+    
+    func shuffleAnswers(correctAnswer: String, incorrectAnswers: [String]) -> [String] {
+        var allAnswers = [correctAnswer] + incorrectAnswers
+        allAnswers.shuffle()
+        return allAnswers
+    }
+
 }
 
 struct CountdownTimerView: View {
@@ -106,9 +154,4 @@ struct CountdownTimerView: View {
             }
         }
     }
-}
-
-
-#Preview {
-    QuizView(backgroundColorChoosed: .constant(.appGreen))
 }

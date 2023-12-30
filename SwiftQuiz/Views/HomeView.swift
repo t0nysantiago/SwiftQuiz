@@ -45,7 +45,7 @@ struct CardView: View {
         NavigationLink(destination: BeforeStartView(backgroundColorChoosed: .constant(cardColor), logoImage: .constant(imageSet), difficult: .constant(difficult))) {
             ZStack (alignment: .leading) {
                 Rectangle()
-                    .frame(width: .infinity, height: 150)
+                    .frame(width: 330, height: 150)
                     .foregroundColor(.clear)
                     .background(
                         LinearGradient(
@@ -103,11 +103,11 @@ struct TopHomeView: View {
     @State private var isUserViewActive = false
     var body: some View {
         ZStack {
-            HStack (alignment: .firstTextBaseline){
+            HStack {
                 VStack (alignment: .leading, spacing: 10) {
                     Text("Let's Play")
                         .font(.system(size: 30, design: .rounded))
-                        .foregroundStyle(.appGreen)
+                        .foregroundStyle(.appOrange)
                         .bold()
                     
                     Text("Go for the top!")
@@ -135,7 +135,7 @@ struct TopHomeView: View {
                 
                 Image(systemName: "trophy.fill")
                     .font(.system(size: 25))
-                    .foregroundStyle(.appGreen)
+                    .foregroundStyle(.appOrange)
                     .padding()
                     .onTapGesture {
                         isLeaderboardViewActive = true
@@ -143,7 +143,7 @@ struct TopHomeView: View {
                 
                 Image(systemName: "person.fill")
                     .font(.system(size: 30))
-                    .foregroundStyle(.appGreen)
+                    .foregroundStyle(.appOrange)
                     .onTapGesture {
                         isUserViewActive = true
                     }
@@ -161,9 +161,4 @@ enum Difficult: String, CaseIterable, Identifiable {
 enum PhaseStatus: String, CaseIterable, Identifiable {
     case open = "Continue", finished = "Finished", block = "Blocked"
     var id: Self { self }
-}
-
-
-#Preview {
-    HomeView()
 }

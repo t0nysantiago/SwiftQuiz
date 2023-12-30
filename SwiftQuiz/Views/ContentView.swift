@@ -16,24 +16,7 @@ struct ContentView: View {
                     
                     Spacer()
                     
-                    ZStack{
-                        RadialGradient(gradient: Gradient(colors: [.white, .clear]), center: .center, startRadius: 0, endRadius: 180)
-                            .frame(width: 400, height: 400)
-                        
-                        VStack (spacing: -15){
-                            Image("swiftimg")
-                                .resizable()
-                                .frame(width: 260.0, height: 120.0)
-                                .rotationEffect(Angle.degrees(-5))
-                            
-                            
-                            
-                            Image("quizimg")
-                                .resizable()
-                                .frame(width: 140.0, height: 80.0)
-                                .rotationEffect(Angle.degrees(-5))
-                        }
-                    }
+                    logoSwiftView()
                     
                     Text("Continue with")
                         .font(.system(size: 20, design: .rounded))
@@ -54,8 +37,31 @@ struct ContentView: View {
     }
 }
 
+struct logoSwiftView: View {
+    var body: some View {
+        ZStack{
+            RadialGradient(gradient: Gradient(colors: [.white, .clear]), center: .center, startRadius: 0, endRadius: 180)
+                .frame(width: 400, height: 400)
+            
+            VStack (spacing: -15){
+                Image("swiftimg")
+                    .resizable()
+                    .frame(width: 260.0, height: 120.0)
+                    .rotationEffect(Angle.degrees(-5))
+                
+                
+                
+                Image("quizimg")
+                    .resizable()
+                    .frame(width: 140.0, height: 80.0)
+                    .rotationEffect(Angle.degrees(-5))
+            }
+        }
+    }
+}
+
 struct SignEmailMessage: View {
-    @State private var isHomeViewActive = false
+    @State private var isSignInViewActive = false
     
     var body: some View {
         ZStack {
@@ -65,7 +71,7 @@ struct SignEmailMessage: View {
                     .foregroundStyle(Color.appWhite)
                 
                 Button(action: {
-                    isHomeViewActive = true
+                    isSignInViewActive = true
                 }) {
                     Text("email")
                         .font(.system(size: 17, design: .rounded))
@@ -78,8 +84,8 @@ struct SignEmailMessage: View {
         }
         .background(
             NavigationLink(
-                destination: HomeView(),
-                isActive: $isHomeViewActive
+                destination: SignInView(),
+                isActive: $isSignInViewActive
             ) {
                 EmptyView()
             }
@@ -145,8 +151,4 @@ struct SOButtonView: View {
             }
         }
     }
-}
-
-#Preview {
-    ContentView()
 }

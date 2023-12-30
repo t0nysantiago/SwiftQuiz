@@ -6,12 +6,21 @@
 //
 
 import SwiftUI
+import SwiftData
+
+class UserSettings: ObservableObject {
+    @Published var currentUser: User?
+}
 
 @main
 struct SwiftQuizApp: App {
+    @StateObject var userSettings = UserSettings()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(for: [User.self, Points.self])
+                .environmentObject(userSettings)
         }
     }
 }
