@@ -15,11 +15,14 @@ final public class Points {
     weak var user: User?
     
     var point: Int
+    
+    var date: Date
 
     init(user: User,
          point: Int
          ) {
         self.user = user
         self.point = point
+        self.date = .now
     }
 }

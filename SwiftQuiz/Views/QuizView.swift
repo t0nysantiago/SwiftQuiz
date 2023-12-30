@@ -14,6 +14,8 @@ struct QuizView: View {
     @State private var currentQuestionIndex = 0
     @State private var selectedAnswerIndex: Int? = nil
     @State private var answeredCorrectly: Bool? = nil
+    @State private var shouldShowEndQuizView = false
+    @State private var timerValue = 30
     
     var currentQuestion: TriviaQuestion? {
         guard triviaQuestions.indices.contains(currentQuestionIndex) else {
@@ -21,7 +23,21 @@ struct QuizView: View {
         }
         return triviaQuestions[currentQuestionIndex]
     }
-
+    
+    private var timer: Timer {
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            if self.timerValue > 0 {
+                self.timerValue -= 1
+            } else {
+                if currentQuestionIndex + 1 < triviaQuestions.count {
+                    currentQuestionIndex += 1
+                    timerValue = 30
+                } else {
+                    shouldShowEndQuizView = true
+                }
+            }
+        }
+    }
     
     var body: some View {
         NavigationView {
@@ -40,9 +56,9 @@ struct QuizView: View {
                         
                         Spacer()
                         
-                        CountdownTimerView()
-                        
-                        Spacer(minLength: 150)
+                        Text("\(timerValue) seconds left")
+                            .font(.system(size: 20, weight: .bold, design: .rounded))
+                            .foregroundColor(.white)
                     }
                     
                     Spacer()
@@ -56,6 +72,14 @@ struct QuizView: View {
                     }
                     
                     Spacer()
+                    
+                    NavigationLink(
+                        destination: EndQuizView(),
+                        isActive: $shouldShowEndQuizView,
+                        label: {
+                            EmptyView()
+                        }
+                    )
                     
                     Text("\(currentQuestionIndex + 1) / \(triviaQuestions.count)")
                         .font(.system(size: 14, design: .rounded))
@@ -82,10 +106,18 @@ struct QuizView: View {
                                         self.answeredCorrectly = isCorrect ? true : false
                                         
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                            if self.answeredCorrectly != nil {
-                                                self.currentQuestionIndex += 1
-                                                self.selectedAnswerIndex = nil
-                                                self.answeredCorrectly = nil
+                                            if currentQuestionIndex + 1 < triviaQuestions.count {
+                                                if self.answeredCorrectly != nil {
+                                                    self.currentQuestionIndex += 1
+                                                    self.selectedAnswerIndex = nil
+                                                    self.answeredCorrectly = nil
+                                                    self.timerValue = 30
+                                                } else {
+                                                    self.currentQuestionIndex += 1
+                                                    self.timerValue = 30
+                                                }
+                                            } else {
+                                                shouldShowEndQuizView = true
                                             }
                                         }
                                     }
@@ -115,6 +147,9 @@ struct QuizView: View {
                 }
                 .padding(.horizontal, 30)
             }
+            .onAppear {
+                _ = timer
+            }
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
@@ -122,36 +157,7 @@ struct QuizView: View {
     
     func shuffleAnswers(correctAnswer: String, incorrectAnswers: [String]) -> [String] {
         var allAnswers = [correctAnswer] + incorrectAnswers
-        allAnswers.shuffle()
+        //        allAnswers.shuffle()
         return allAnswers
-    }
-
-}
-
-struct CountdownTimerView: View {
-    @State private var timeRemaining: CGFloat = 1.0
-    
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    let totalTime: CGFloat = 30.0
-    
-    var body: some View {
-        VStack {
-            ZStack {
-                Circle()
-                    .trim(from: 0, to: timeRemaining)
-                    .stroke(Color.appWhite, lineWidth: 3)
-                    .frame(width: 50, height: 50)
-                    .rotationEffect(.degrees(-90))
-                
-                Text("\(Int(totalTime - (totalTime * Double(timeRemaining))))")
-                    .font(.largeTitle)
-                    .foregroundColor(.appWhite)
-            }
-        }
-        .onReceive(timer) { _ in
-            if timeRemaining > 0 {
-                timeRemaining -= 1 / totalTime
-            }
-        }
     }
 }
