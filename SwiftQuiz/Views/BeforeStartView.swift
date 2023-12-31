@@ -54,7 +54,7 @@ struct BeforeStartView: View {
                     Spacer()
                     
                     NavigationLink(
-                        destination: QuizView(triviaQuestions: $triviaQuestions, backgroundColorChoosed: .constant(backgroundColorChoosed)),
+                        destination: QuizView(triviaQuestions: $triviaQuestions, difficult: .constant(difficult), backgroundColorChoosed: .constant(backgroundColorChoosed)),
                         isActive: $isQuizViewActive,
                         label: {
                             EmptyView()

@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct EndQuizView: View {
+    @Binding var finalPoints: Int
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("You get \(finalPoints) points!")
     }
 }
 
 #Preview {
-    EndQuizView()
+    EndQuizView(finalPoints: .constant(5))
 }
