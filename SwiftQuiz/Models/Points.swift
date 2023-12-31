@@ -11,17 +11,16 @@ import SwiftData
 @Model
 final public class Points {
     
-    @Relationship(deleteRule: .cascade, inverse: \User.points)
-    weak var user: User?
+    var userId: String
     
     var point: Int
     
     var date: Date
 
-    init(user: User,
+    init(userId: String,
          point: Int
          ) {
-        self.user = user
+        self.userId = userId
         self.point = point
         self.date = .now
     }

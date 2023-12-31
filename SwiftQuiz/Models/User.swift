@@ -16,7 +16,6 @@ final public class User {
     @Attribute(.unique) var username: String
     @Attribute(.unique) var email: String
     var password: String
-    var points: [Points]?
     
     init(username: String = "",
          email: String = "",

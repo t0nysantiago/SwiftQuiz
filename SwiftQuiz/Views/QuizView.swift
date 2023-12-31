@@ -76,7 +76,7 @@ struct QuizView: View {
                     Spacer()
                     
                     NavigationLink(
-                        destination: EndQuizView(finalPoints: $points),
+                        destination: EndQuizView(finalPoints: $points, backgroundColorChoosed: $backgroundColorChoosed),
                         isActive: $shouldShowEndQuizView,
                         label: {
                             EmptyView()
