@@ -12,7 +12,7 @@ struct LeaderboardView: View {
     @State private var selectedTime: SortTime = .today
     @State private var usersData: [User] = []
     @State private var pointsData: [Points] = []
-    @State private var userDataDictionary: [String: [String: Int]] = [:]
+    @State private var userDataDictionary: [User: [String: Int]] = [:]
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.modelContext) var modelContext
     
@@ -60,19 +60,12 @@ struct LeaderboardView: View {
                         }
                     }
                     
-                    Spacer(minLength: 60)
+                    Spacer(minLength: 35)
                     
-                    HStack (alignment: .center, spacing: 30) {
-                        TopWinnersCircle(ranking: .constant(Ranking.second))
-                        TopWinnersCircle(ranking: .constant(Ranking.first))
-                        TopWinnersCircle(ranking: .constant(Ranking.third))
+                    ForEach(userDataDictionary.sorted(by: { $0.value[selectedTime.rawValue, default: 0] > $1.value[selectedTime.rawValue, default: 0] }).prefix(10), id: \.key) { (user, points) in
+                        RankingView(user: user, points: points, selectedTime: selectedTime)
+                            .padding(.horizontal, 20)
                     }
-                    
-                    Spacer(minLength: 30)
-                    
-                    ForEach(4..<11) { index in
-                        RankingView(position: .constant(index))
-                    }.padding(10).padding(.horizontal, 30)
                     
                     Spacer()
                     
@@ -92,15 +85,12 @@ struct LeaderboardView: View {
                 for user in users {
                     var userPoints: [String: Int] = [:]
                     
-                    userPoints["today"] = todayPoints[user.id] ?? 0
-                    userPoints["week"] = lastSevenDaysPoints[user.id] ?? 0
-                    userPoints["allTime"] = totalPoints[user.id] ?? 0
+                    userPoints["Today"] = todayPoints[user.id] ?? 0
+                    userPoints["Week"] = lastSevenDaysPoints[user.id] ?? 0
+                    userPoints["All Time"] = totalPoints[user.id] ?? 0
                     
-                    userDataDictionary[user.username] = userPoints
+                    userDataDictionary[user] = userPoints
                 }
-                
-                let sortedData = userDataDictionary.sorted { $0.value["today", default: 0] > $1.value["today", default: 0] }
-                userDataDictionary = Dictionary(uniqueKeysWithValues: sortedData)
             }
         }
         .background(.appWhite)
@@ -117,7 +107,7 @@ struct LeaderboardView: View {
         }
         return users
     }
-
+    
     func fetchUsersPointsData() -> [Points] {
         let fetchDescriptor = FetchDescriptor<Points>()
         var points: [Points] = []
@@ -128,18 +118,18 @@ struct LeaderboardView: View {
         }
         return points
     }
-
+    
     func calculatePointsForToday(points: [Points]) -> [String: Int] {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-
+        
         let currentDate = dateFormatter.string(from: Date())
-
+        
         var todayPoints: [String: Int] = [:]
-
+        
         for point in points {
             let pointDate = dateFormatter.string(from: point.date)
-
+            
             if currentDate == pointDate {
                 if let existingPoints = todayPoints[point.userId] {
                     todayPoints[point.userId] = existingPoints + point.point
@@ -148,15 +138,15 @@ struct LeaderboardView: View {
                 }
             }
         }
-
+        
         return todayPoints
     }
-
+    
     func calculatePointsForLastSevenDays(points: [Points]) -> [String: Int] {
         let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
-
+        
         var lastSevenDaysPoints: [String: Int] = [:]
-
+        
         for point in points {
             if point.date >= sevenDaysAgo {
                 if let existingPoints = lastSevenDaysPoints[point.userId] {
@@ -166,13 +156,13 @@ struct LeaderboardView: View {
                 }
             }
         }
-
+        
         return lastSevenDaysPoints
     }
-
+    
     func calculateTotalPoints(points: [Points]) -> [String: Int] {
         var totalPoints: [String: Int] = [:]
-
+        
         for point in points {
             if let existingPoints = totalPoints[point.userId] {
                 totalPoints[point.userId] = existingPoints + point.point
@@ -180,10 +170,10 @@ struct LeaderboardView: View {
                 totalPoints[point.userId] = point.point
             }
         }
-
+        
         return totalPoints
     }
-
+    
     func sortDictionary(by timing: SortTime) {
         switch timing {
         case .today:
@@ -204,92 +194,31 @@ struct UserPointsMap {
     var totalPoints: Int
 }
 
-struct TopWinnersCircle: View {
-    @Binding var ranking: Ranking
-    private var radius: Double
-    
-    init(ranking: Binding<Ranking>) {
-        self._ranking = ranking
-        self.radius = ranking.wrappedValue.rawValue == Ranking.first.rawValue ? 120 : 80
-    }
-    
-    var body: some View {
-        VStack {
-            ZStack {
-                Circle()
-                    .frame(width: radius, height: radius)
-                    .foregroundColor(circleColor(for: ranking))
-                
-                Circle()
-                    .frame(width: radius * 0.95, height: radius * 0.95)
-                    .foregroundColor(.white)
-                
-                if ranking == Ranking.first {
-                    Text("👑")
-                        .font(.system(size: 30))
-                        .offset(y: -80)
-                    
-                    TopWinnersFoot(ranking: .constant(Ranking.first), position: .constant(CGSize(width: 0.0, height: 55.0)), colorCircle: .constant(.yellow))
-                } else {
-                    TopWinnersFoot(ranking: ranking == Ranking.second ? .constant(Ranking.second) : .constant(Ranking.third), position: .constant(CGSize(width: 0.0, height: 35.0)), colorCircle: ranking == Ranking.second ? .constant(.gray) : .constant(.brown))
-                }
-            }
-            .padding(.bottom)
-            
-            Text("Username")
-            Text("2000")
-        }
-    }
-    
-    func circleColor(for ranking: Ranking) -> Color {
-        switch ranking {
-        case .first:
-            return Color.yellow
-        case .second:
-            return Color.gray
-        case .third:
-            return Color.brown
-        }
-    }
-}
-
-struct TopWinnersFoot: View {
-    @Binding var ranking: Ranking
-    @Binding var position: CGSize
-    @Binding var colorCircle: Color
-    var body: some View {
-        ZStack {
-            Circle()
-                .frame(width: 35, height: 35)
-                .foregroundStyle(colorCircle)
-                .offset(position)
-            
-            Text("\(ranking.rawValue)")
-                .font(.system(size: 18, design:.rounded))
-                .foregroundStyle(.appWhite)
-                .bold()
-                .offset(position)
-        }
-    }
-}
-
 struct RankingView: View {
-    @Binding var position: Int
+    let user: User
+    let points: [String: Int]
+    let selectedTime: SortTime
     @State private var radius: Double = 50.0
+
     var body: some View {
         HStack {
-            Text("\(position)")
-            
-            Circle()
+            Image(user.img_name)
+                .resizable()
                 .frame(width: radius, height: radius)
-                .foregroundStyle(.appOrange)
+                .foregroundColor(.appOrange)
+                .clipShape(Circle())
+                .overlay(Circle().stroke(Color.appOrange, lineWidth: 2))
                 .padding(.horizontal, 5)
             
-            Text("Username People")
+            Text(user.username)
             
             Spacer()
             
-            Text("\(1932)")
+            if let selectedPoints = points[selectedTime.rawValue] {
+                Text("\(selectedPoints)").padding(.horizontal, 5)
+            } else {
+                Text("N/A").padding(.horizontal, 5)
+            }
         }
     }
 }
@@ -303,7 +232,3 @@ enum Ranking: Int, CaseIterable, Identifiable {
     case first = 1, second, third
     var id: Self { self }
 }
-
-//#Preview {
-//    LeaderboardView()
-//}

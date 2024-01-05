@@ -114,6 +114,8 @@ struct EndQuizView: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
 }
 

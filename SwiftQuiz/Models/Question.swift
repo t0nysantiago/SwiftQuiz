@@ -7,7 +7,6 @@
 
 import Foundation
 
-// Modelo para representar os dados da resposta da API
 struct TriviaResponse: Codable {
     let responseCode: Int
     let results: [TriviaQuestion]
@@ -84,8 +83,6 @@ class TriviaModel: ObservableObject {
     }
 }
 
-
-// Extensão para decodificar base64 para String
 extension Data {
     var string: String? {
         return String(data: self, encoding: .utf8)

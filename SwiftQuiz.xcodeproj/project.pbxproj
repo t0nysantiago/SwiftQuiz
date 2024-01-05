@@ -22,7 +22,6 @@
 		EA7EEDB22B3D77F100151B1E /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EEDB12B3D77F100151B1E /* SignUpView.swift */; };
 		EA7EEDB52B3D800B00151B1E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EEDB42B3D800B00151B1E /* User.swift */; };
 		EA7EEDF02B3D8E7200151B1E /* Points.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EEDEF2B3D8E7200151B1E /* Points.swift */; };
-		EA7EEDF52B3D987100151B1E /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EEDF42B3D987100151B1E /* TestView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,7 +41,6 @@
 		EA7EEDB12B3D77F100151B1E /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		EA7EEDB42B3D800B00151B1E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EA7EEDEF2B3D8E7200151B1E /* Points.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Points.swift; sourceTree = "<group>"; };
-		EA7EEDF42B3D987100151B1E /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +101,6 @@
 				EA7EEDAD2B3CFB1700151B1E /* UserView.swift */,
 				EA7EEDAF2B3D6F5800151B1E /* SignInView.swift */,
 				EA7EEDB12B3D77F100151B1E /* SignUpView.swift */,
-				EA7EEDF42B3D987100151B1E /* TestView.swift */,
 				EA551F122B40B240005F4797 /* EndQuizView.swift */,
 			);
 			path = Views;
@@ -193,7 +190,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA7EEDF52B3D987100151B1E /* TestView.swift in Sources */,
 				EA7EED992B3B762300151B1E /* ContentView.swift in Sources */,
 				EA7EEDA82B3C313500151B1E /* HomeView.swift in Sources */,
 				EA551F132B40B240005F4797 /* EndQuizView.swift in Sources */,

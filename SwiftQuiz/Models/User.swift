@@ -15,6 +15,7 @@ final public class User {
     @Attribute(.unique) public var id: String
     @Attribute(.unique) var username: String
     @Attribute(.unique) var email: String
+    var img_name: String
     var password: String
     
     init(username: String = "",
@@ -24,6 +25,7 @@ final public class User {
         self.id = UUID().uuidString
         self.username = username
         self.email = email
+        self.img_name = "userlogo"
         self.password = ""
         self.setPassword(password)
     }
