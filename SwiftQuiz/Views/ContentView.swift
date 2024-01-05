@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var isSignInViewActive = false
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack{
                 Color.appOrange.ignoresSafeArea()
                 VStack (spacing: 15){
@@ -25,25 +25,24 @@ struct ContentView: View {
                         .bold()
                         .foregroundStyle(Color.appWhite)
                     
-                    NavigationLink(
-                        destination: SignInView(),
-                        isActive: $isSignInViewActive
-                    ) {
-                        EmptyView()
-                    }
-                    
                     SOButtonView(logoImg: .constant("applelogo"), platformName: .constant("Apple"), action: {})
+                    
                     SOButtonView(logoImg: .constant("googlelogo"), platformName: .constant("Google"), action: {})
+                    
                     SOButtonView(logoImg: .constant("envelope"), platformName: .constant("Email"), action: {
                         isSignInViewActive = true
                     })
+                    .navigationDestination(isPresented: $isSignInViewActive) {
+                        SignInView()
+                    }
                     
                     Spacer()
                     
                     FootMessage()
                 }
             }
-        }.navigationBarHidden(true)
+        }
+        .navigationBarHidden(true)
     }
 }
 

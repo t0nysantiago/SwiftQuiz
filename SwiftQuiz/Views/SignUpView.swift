@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct SignUpView: View {
+    @State private var backToSignIn: Bool = false
     @State private var isHomeViewActive = false
     @State private var username: String = ""
     @State private var email: String = ""
@@ -47,14 +48,6 @@ struct SignUpView: View {
                     CustomSecureField(text: $confirmPassword, placeholder: "Confirm Password")
                         .padding(.bottom)
                     
-                    NavigationLink(
-                        destination: HomeView(),
-                        isActive: $isHomeViewActive
-                    ) {
-                        EmptyView()
-                    }
-                    .hidden()
-                    
                     Button(action: {
                         if passwordsMatch() {
                             let newUser = User(username: username, email: email, password: password)
@@ -89,6 +82,9 @@ struct SignUpView: View {
                     .alert("Usuário ou email já existe", isPresented: $showAlertUserExists) {
                         Button("OK", role: .cancel) { showAlertUserExists = false }
                     }
+                    .navigationDestination(isPresented: $isHomeViewActive) {
+                        HomeView()
+                    }
                     
                     HStack (spacing: 5) {
                         Text("Already have a account?")
@@ -98,7 +94,10 @@ struct SignUpView: View {
                             .font(.system(size: 17, design: .rounded))
                             .foregroundStyle(.appOrange)
                             .onTapGesture {
-                                presentationMode.wrappedValue.dismiss()
+                                backToSignIn = true
+                            }
+                            .navigationDestination(isPresented: $backToSignIn) {
+                                SignInView()
                             }
                     }
                     
@@ -147,6 +146,8 @@ struct SignUpView: View {
             return verification
         }
         
-        return password == confirmPassword
+        verification = password == confirmPassword
+        
+        return verification
     }
 }

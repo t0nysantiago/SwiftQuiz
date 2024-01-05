@@ -20,14 +20,6 @@ struct EndQuizView: View {
                 backgroundColorChoosed.ignoresSafeArea()
                 VStack {
                     
-                    NavigationLink (
-                        destination: HomeView(),
-                        isActive: $isToBackHome
-                    ) {
-                        EmptyView()
-                    }
-                    .hidden()
-                    
                     if finalPoints > 0 {
                         Spacer()
                         
@@ -66,6 +58,9 @@ struct EndQuizView: View {
                         .padding(.horizontal, 40)
                         .alert("Erro inesperado", isPresented: $showAlertError) {
                             Button("OK", role: .cancel) { showAlertError = false }
+                        }
+                        .navigationDestination(isPresented: $isToBackHome) {
+                            HomeView()
                         }
                         
                         Spacer()

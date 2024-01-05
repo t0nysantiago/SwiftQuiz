@@ -38,7 +38,7 @@ struct TriviaQuestion: Codable {
 class TriviaModel: ObservableObject {
     func fetchTriviaQuestions(amount: Int, difficult: Difficult, completion: @escaping ([TriviaQuestion]?) -> Void) {
         guard let url = URL(string: "https://opentdb.com/api.php?amount=\(amount)&difficulty=\(difficult.rawValue.lowercased())&type=multiple&encode=base64") else {
-            print("URL inválida")
+            print("Invalid URL")
             completion(nil)
             return
         }
@@ -51,7 +51,7 @@ class TriviaModel: ObservableObject {
             }
             
             guard let data = data else {
-                print("Dados ausentes")
+                print("Data missing")
                 completion(nil)
                 return
             }
@@ -76,7 +76,7 @@ class TriviaModel: ObservableObject {
                 completion(decodedQuestions)
                 
             } catch {
-                print("Erro na decodificação: \(error.localizedDescription)")
+                print("Decodification error: \(error.localizedDescription)")
                 completion(nil)
             }
         }.resume()

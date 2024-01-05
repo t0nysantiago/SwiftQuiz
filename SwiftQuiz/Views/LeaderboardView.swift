@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct LeaderboardView: View {
+    @State private var backToHome: Bool = false
     @State private var selectedTime: SortTime = .today
     @State private var usersData: [User] = []
     @State private var pointsData: [Points] = []
@@ -17,84 +18,88 @@ struct LeaderboardView: View {
     @Environment(\.modelContext) var modelContext
     
     var body: some View {
-        
-        ScrollView (showsIndicators: false) {
-            ZStack{
-                Color.appWhite.ignoresSafeArea()
-                VStack{
-                    HStack{
-                        Image(systemName: "chevron.backward.circle")
-                            .font(.system(size: 30))
-                            .foregroundStyle(Color.appOrange)
-                            .onTapGesture {
-                                presentationMode.wrappedValue.dismiss()
+        NavigationView {
+            ScrollView (showsIndicators: false) {
+                ZStack{
+                    Color.appWhite.ignoresSafeArea()
+                    VStack{
+                        HStack{
+                            Image(systemName: "chevron.backward.circle")
+                                .font(.system(size: 30))
+                                .foregroundStyle(Color.appOrange)
+                                .onTapGesture {
+                                    backToHome = true
+                                }
+                                .navigationDestination(isPresented: $backToHome){
+                                    HomeView()
+                                }
+                            
+                            Spacer()
+                            
+                            Text("Leaderboard")
+                                .font(.system(size: 25, design: .rounded))
+                                .foregroundStyle(Color.black)
+                                .bold()
+                                .padding()
+                            
+                            Spacer(minLength: 90)
+                        }.padding(.horizontal)
+                        
+                        HStack (spacing: -10) {
+                            ForEach(SortTime.allCases, id: \.self) { timing in
+                                Button(action: {
+                                    selectedTime = timing
+                                    sortDictionary(by: timing)
+                                }) {
+                                    ZStack{
+                                        Text(timing.rawValue)
+                                            .foregroundColor(timing == selectedTime ? Color.appWhite : Color.black)
+                                            .font(.system(size: 16, design: .rounded))
+                                            .cornerRadius(15)
+                                    }
+                                    .frame(width: 110, height: 40)
+                                    .background(RoundedRectangle(cornerRadius: 15.0))
+                                    .foregroundStyle(timing == selectedTime ? Color.appOrange : Color.clear)
+                                }
                             }
+                        }
+                        
+                        Spacer(minLength: 35)
+                        
+                        ForEach(userDataDictionary.sorted(by: { $0.value[selectedTime.rawValue, default: 0] > $1.value[selectedTime.rawValue, default: 0] }).prefix(10), id: \.key) { (user, points) in
+                            RankingView(user: user, points: points, selectedTime: selectedTime)
+                                .padding(.horizontal, 20)
+                        }
                         
                         Spacer()
                         
-                        Text("Leaderboard")
-                            .font(.system(size: 25, design: .rounded))
-                            .foregroundStyle(Color.black)
-                            .bold()
-                            .padding()
+                    }
+                }
+                .frame(width: UIScreen.main.bounds.width)
+                .onAppear {
+                    let users = fetchUsersData()
+                    let points = fetchUsersPointsData()
+                    
+                    let todayPoints = calculatePointsForToday(points: points)
+                    let lastSevenDaysPoints = calculatePointsForLastSevenDays(points: points)
+                    let totalPoints = calculateTotalPoints(points: points)
+                    
+                    for user in users {
+                        var userPoints: [String: Int] = [:]
                         
-                        Spacer(minLength: 90)
-                    }.padding(.horizontal)
-                    
-                    HStack (spacing: -10) {
-                        ForEach(SortTime.allCases, id: \.self) { timing in
-                            Button(action: {
-                                selectedTime = timing
-                                sortDictionary(by: timing)
-                            }) {
-                                ZStack{
-                                    Text(timing.rawValue)
-                                        .foregroundColor(timing == selectedTime ? Color.appWhite : Color.black)
-                                        .font(.system(size: 16, design: .rounded))
-                                        .cornerRadius(15)
-                                }
-                                .frame(width: 110, height: 40)
-                                .background(RoundedRectangle(cornerRadius: 15.0))
-                                .foregroundStyle(timing == selectedTime ? Color.appOrange : Color.clear)
-                            }
-                        }
+                        userPoints["Today"] = todayPoints[user.id] ?? 0
+                        userPoints["Week"] = lastSevenDaysPoints[user.id] ?? 0
+                        userPoints["All Time"] = totalPoints[user.id] ?? 0
+                        
+                        userDataDictionary[user] = userPoints
                     }
-                    
-                    Spacer(minLength: 35)
-                    
-                    ForEach(userDataDictionary.sorted(by: { $0.value[selectedTime.rawValue, default: 0] > $1.value[selectedTime.rawValue, default: 0] }).prefix(10), id: \.key) { (user, points) in
-                        RankingView(user: user, points: points, selectedTime: selectedTime)
-                            .padding(.horizontal, 20)
-                    }
-                    
-                    Spacer()
-                    
                 }
             }
-            .navigationBarBackButtonHidden(true)
-            .navigationBarHidden(true)
-            .frame(width: UIScreen.main.bounds.width)
-            .onAppear {
-                let users = fetchUsersData()
-                let points = fetchUsersPointsData()
-                
-                let todayPoints = calculatePointsForToday(points: points)
-                let lastSevenDaysPoints = calculatePointsForLastSevenDays(points: points)
-                let totalPoints = calculateTotalPoints(points: points)
-                
-                for user in users {
-                    var userPoints: [String: Int] = [:]
-                    
-                    userPoints["Today"] = todayPoints[user.id] ?? 0
-                    userPoints["Week"] = lastSevenDaysPoints[user.id] ?? 0
-                    userPoints["All Time"] = totalPoints[user.id] ?? 0
-                    
-                    userDataDictionary[user] = userPoints
-                }
-            }
+            .background(.appWhite)
+            .scrollContentBackground(.hidden)
         }
-        .background(.appWhite)
-        .scrollContentBackground(.hidden)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
     }
     
     func fetchUsersData() -> [User] {

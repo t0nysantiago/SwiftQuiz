@@ -51,22 +51,6 @@ struct SignInView: View {
                             .foregroundStyle(.appOrange)
                     }.padding(.horizontal).padding(.bottom)
                     
-                    NavigationLink(
-                        destination: HomeView(),
-                        isActive: $isHomeViewActive
-                    ) {
-                        EmptyView()
-                    }
-                    .hidden()
-                    
-                    NavigationLink (
-                        destination: SignUpView(),
-                        isActive: $isSignUpViewActive
-                    ) {
-                        EmptyView()
-                    }
-                    .hidden()
-                    
                     Button(action: {
                         if validLogin() {
                             isHomeViewActive = true
@@ -89,6 +73,9 @@ struct SignInView: View {
                     .alert("Email ou senha incorretos", isPresented: $showAlertBadLogin) {
                         Button("OK", role: .cancel) { showAlertBadLogin = false }
                     }
+                    .navigationDestination(isPresented: $isHomeViewActive) {
+                        HomeView()
+                    }
                     
                     HStack (spacing: 5) {
                         Text("Don't have account?")
@@ -99,6 +86,9 @@ struct SignInView: View {
                             .foregroundStyle(.appOrange)
                             .onTapGesture {
                                 isSignUpViewActive = true
+                            }
+                            .navigationDestination(isPresented: $isSignUpViewActive) {
+                                SignUpView()
                             }
                     }
                     

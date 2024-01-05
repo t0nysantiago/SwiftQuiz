@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack (alignment: .leading){
                 Color.appWhite.ignoresSafeArea()
                 VStack {
@@ -115,22 +115,6 @@ struct TopHomeView: View {
                         .foregroundStyle(.gray)
                 }
                 
-                NavigationLink(
-                    destination: LeaderboardView(),
-                    isActive: $isLeaderboardViewActive,
-                    label: {
-                        EmptyView()
-                    }
-                )
-                
-                NavigationLink(
-                    destination: UserView(),
-                    isActive: $isUserViewActive,
-                    label: {
-                        EmptyView()
-                    }
-                )
-                
                 Spacer()
                 
                 Image(systemName: "trophy.fill")
@@ -140,12 +124,18 @@ struct TopHomeView: View {
                     .onTapGesture {
                         isLeaderboardViewActive = true
                     }
+                    .navigationDestination(isPresented: $isLeaderboardViewActive) {
+                        LeaderboardView()
+                    }
                 
                 Image(systemName: "person.fill")
                     .font(.system(size: 30))
                     .foregroundStyle(.appOrange)
                     .onTapGesture {
                         isUserViewActive = true
+                    }
+                    .navigationDestination(isPresented: $isUserViewActive) {
+                        UserView()
                     }
                 
             }.padding(.horizontal, 10)

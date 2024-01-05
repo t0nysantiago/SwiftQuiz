@@ -6,15 +6,17 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct UserView: View {
+    @State private var backToHome: Bool = false
     @State private var usernameText: String = ""
     @State private var emailText: String = ""
-    @State private var passwordText: String = ""
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.modelContext) var modelContext
     @EnvironmentObject var userSettings: UserSettings
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack (spacing: 20){
                     HStack{
@@ -22,7 +24,10 @@ struct UserView: View {
                             .font(.system(size: 30))
                             .foregroundStyle(Color.appOrange)
                             .onTapGesture {
-                                presentationMode.wrappedValue.dismiss()
+                                backToHome = true
+                            }
+                            .navigationDestination(isPresented: $backToHome) {
+                                HomeView()
                             }
                         
                         Spacer()
@@ -33,13 +38,24 @@ struct UserView: View {
                             .bold()
                             .padding()
                         
-                        Spacer(minLength: 125)
+                        Spacer()
+                        
+                        Image(systemName: "door.right.hand.open")
+                            .font(.system(size: 30))
+                            .foregroundStyle(Color.appOrange)
+                            .onTapGesture {
+                                presentationMode.wrappedValue.dismiss()
+                            }
                     }
                     
                     ZStack{
-                        Circle()
-                            .frame(width: 200)
-                            .foregroundStyle(.appPurple)
+                        Image("userlogo")
+                            .resizable()
+                            .frame(width: 200, height: 200)
+                            .foregroundColor(.appOrange)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.appOrange, lineWidth: 2))
+                            .padding(.horizontal, 5)
                         Circle()
                             .frame(width: 40)
                             .foregroundStyle(.appOrange)
@@ -55,16 +71,16 @@ struct UserView: View {
                             .offset(CGSize(width: 70.0, height: 70.0))
                     }
                     
-                    Text("Username")
+                    Text(userSettings.currentUser?.username ?? "Username")
                         .font(.system(size: 24, design: .rounded))
                         .bold()
                         .padding(.bottom, 20)
                     
                     CustomTextField(text: $usernameText, placeholder: "Username")
                     CustomTextField(text: $emailText, placeholder: "Email")
-                    CustomSecureField(text: $passwordText, placeholder: "Password")
                     
                     Button(action: {
+                        updateUser()
                     }) {
                         ZStack{
                             Text("Save")
@@ -80,12 +96,6 @@ struct UserView: View {
                     
                 }
                 .padding(.horizontal, 30)
-                .onAppear {
-                    if let user = userInformation {
-                        usernameText = user.username
-                        emailText = user.email
-                    }
-                }
             }
             .background(.appWhite)
             .scrollContentBackground(.hidden)
@@ -93,9 +103,55 @@ struct UserView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
     }
-    var userInformation: User? {
-        userSettings.currentUser
+    
+    func fetchData() -> [User] {
+        let fetchDescriptor = FetchDescriptor<User>()
+        var users: [User] = []
+        do {
+            users = try modelContext.fetch(fetchDescriptor)
+        } catch {
+            print("Fetch failed")
+        }
+        return users
     }
+    
+    func updateUser() {
+        let fetchedUsers = fetchData()
+        
+        if verifyIfUsernameOrEmailExists() == false {
+            if let user = fetchedUsers.first(where: { $0.id == userSettings.currentUser?.id }) {
+                if usernameText.isEmpty != true && emailText.isEmpty != true {
+                    user.username = usernameText
+                    user.email = emailText
+                } else if usernameText.isEmpty != true {
+                    user.username = usernameText
+                } else if emailText.isEmpty != true {
+                    user.email = emailText
+                }
+            }
+        }
+    }
+    
+    func verifyIfUsernameOrEmailExists() -> Bool {
+        let fetchedUsers = fetchData()
+        var usernameExists: Bool = false
+        var emailExists: Bool = false
+
+        if usernameText.isEmpty != true {
+            usernameExists = fetchedUsers.contains { fetchedUser in
+                return fetchedUser.username == usernameText
+            }
+        }
+
+        if emailText.isEmpty != true {
+            emailExists = fetchedUsers.contains { fetchedUser in
+                return fetchedUser.email == emailText
+            }
+        }
+
+        return usernameExists || emailExists
+    }
+    
 }
 
 struct CustomTextField: View {
@@ -116,7 +172,7 @@ struct CustomTextField: View {
                 .stroke(isError ? Color.red : (isEditing ? Color.blue : Color.appOrange), lineWidth: 2)
         )
         .padding(.horizontal)
-        .onChange(of: text) { newValue in
+        .onChange(of: text) { oldValue, newValue in
             isError = newValue.isEmpty
         }
     }
@@ -141,7 +197,7 @@ struct CustomSecureField: View {
                 .stroke(isError ? Color.red : (isFocused ? Color.blue : Color.appOrange), lineWidth: 2)
         )
         .padding(.horizontal)
-        .onChange(of: text) { newValue in
+        .onChange(of: text) { oldValue, newValue in
             isError = newValue.isEmpty
         }
     }

@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct QuizView: View {
+    @State private var backToBeforeStart: Bool = false
     @Binding var triviaQuestions: [TriviaQuestion]
     @Binding var difficult: Difficult
+    @Binding var logoImage: String
     @Environment(\.presentationMode) var presentationMode
     @Binding var backgroundColorChoosed: Color
     @State private var currentQuestionIndex = 0
@@ -43,7 +45,7 @@ struct QuizView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack (alignment: .leading) {
                 backgroundColorChoosed.ignoresSafeArea()
                 
@@ -53,7 +55,10 @@ struct QuizView: View {
                             .font(.system(size: 30))
                             .foregroundStyle(Color.appWhite)
                             .onTapGesture {
-                                presentationMode.wrappedValue.dismiss()
+                                backToBeforeStart = true
+                            }
+                            .navigationDestination(isPresented: $backToBeforeStart) {
+                                BeforeStartView(backgroundColorChoosed: $backgroundColorChoosed, logoImage: $logoImage, difficult: $difficult)
                             }
                         
                         Spacer()
@@ -75,18 +80,13 @@ struct QuizView: View {
                     
                     Spacer()
                     
-                    NavigationLink(
-                        destination: EndQuizView(finalPoints: $points, backgroundColorChoosed: $backgroundColorChoosed),
-                        isActive: $shouldShowEndQuizView,
-                        label: {
-                            EmptyView()
-                        }
-                    )
-                    
                     Text("\(currentQuestionIndex + 1) / \(triviaQuestions.count)")
                         .font(.system(size: 14, design: .rounded))
                         .bold()
                         .foregroundColor(.white)
+                        .navigationDestination(isPresented: $shouldShowEndQuizView) {
+                            EndQuizView(finalPoints: $points, backgroundColorChoosed: $backgroundColorChoosed)
+                        }
                     
                     if let currentQuestion = currentQuestion {
                         Text(currentQuestion.question)

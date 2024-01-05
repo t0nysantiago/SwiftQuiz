@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BeforeStartView: View {
+    @State private var backToHome: Bool = false
     @State private var triviaQuestions: [TriviaQuestion] = []
     @State private var isQuizViewActive = false
     @Environment(\.presentationMode) var presentationMode
@@ -15,7 +16,7 @@ struct BeforeStartView: View {
     @Binding var logoImage: String
     @Binding var difficult: Difficult
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack (alignment: .leading) {
                 backgroundColorChoosed.ignoresSafeArea()
                 
@@ -25,7 +26,10 @@ struct BeforeStartView: View {
                         .font(.system(size: 30))
                         .foregroundStyle(Color.appWhite)
                         .onTapGesture {
-                            presentationMode.wrappedValue.dismiss()
+                            backToHome = true
+                        }
+                        .navigationDestination(isPresented: $backToHome) {
+                            HomeView()
                         }
                     
                     Spacer()
@@ -53,16 +57,7 @@ struct BeforeStartView: View {
                     
                     Spacer()
                     
-                    NavigationLink(
-                        destination: QuizView(triviaQuestions: $triviaQuestions, difficult: .constant(difficult), backgroundColorChoosed: .constant(backgroundColorChoosed)),
-                        isActive: $isQuizViewActive,
-                        label: {
-                            EmptyView()
-                        }
-                    )
-                    
                     Button(action: {
-                        print("entrouuuuu")
                         isQuizViewActive = true
                     }) {
                         ZStack{
@@ -75,6 +70,9 @@ struct BeforeStartView: View {
                         .frame(width: 350, height: 50)
                         .background(RoundedRectangle(cornerRadius: 15.0))
                         .foregroundStyle(Color.appWhite)
+                    }
+                    .navigationDestination(isPresented: $isQuizViewActive) {
+                        QuizView(triviaQuestions: $triviaQuestions, difficult: .constant(difficult), logoImage: $logoImage, backgroundColorChoosed: .constant(backgroundColorChoosed))
                     }
                     
                     Spacer()
