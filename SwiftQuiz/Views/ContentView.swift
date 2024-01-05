@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var isSignInViewActive = false
+    
     var body: some View {
         NavigationView {
             ZStack{
@@ -23,10 +25,18 @@ struct ContentView: View {
                         .bold()
                         .foregroundStyle(Color.appWhite)
                     
-                    SOButtonView(logoImg: .constant("applelogo"), platformName: .constant("Apple"))
-                    SOButtonView(logoImg: .constant("googlelogo"), platformName: .constant("Google"))
+                    NavigationLink(
+                        destination: SignInView(),
+                        isActive: $isSignInViewActive
+                    ) {
+                        EmptyView()
+                    }
                     
-                    SignEmailMessage()
+                    SOButtonView(logoImg: .constant("applelogo"), platformName: .constant("Apple"), action: {})
+                    SOButtonView(logoImg: .constant("googlelogo"), platformName: .constant("Google"), action: {})
+                    SOButtonView(logoImg: .constant("envelope"), platformName: .constant("Email"), action: {
+                        isSignInViewActive = true
+                    })
                     
                     Spacer()
                     
@@ -60,40 +70,6 @@ struct logoSwiftView: View {
     }
 }
 
-struct SignEmailMessage: View {
-    @State private var isSignInViewActive = false
-    
-    var body: some View {
-        ZStack {
-            HStack(spacing: 5) {
-                Text("or sign in via")
-                    .font(.system(size: 17, design: .rounded))
-                    .foregroundStyle(Color.appWhite)
-                
-                Button(action: {
-                    isSignInViewActive = true
-                }) {
-                    Text("email")
-                        .font(.system(size: 17, design: .rounded))
-                        .foregroundStyle(Color.appPurple)
-                        .bold()
-                }
-                .buttonStyle(PlainButtonStyle())
-                
-            }
-        }
-        .background(
-            NavigationLink(
-                destination: SignInView(),
-                isActive: $isSignInViewActive
-            ) {
-                EmptyView()
-            }
-            .hidden()
-        )
-    }
-}
-
 struct FootMessage: View {
     var body: some View {
         ZStack{
@@ -124,11 +100,12 @@ struct FootMessage: View {
 struct SOButtonView: View {
     @Binding var logoImg: String
     @Binding var platformName: String
+    var action: () -> Void
     
     var body: some View {
         ZStack {
             Button(action: {
-                
+                action()
             }) {
                 HStack {
                     Image(logoImg)
