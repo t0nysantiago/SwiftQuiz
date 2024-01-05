@@ -15,6 +15,7 @@ struct SignInView: View {
     @State private var isHomeViewActive = false
     @State private var isSignUpViewActive = false
     @State private var showAlertBadLogin = false
+    @State private var showAlertBadEmail = false
     @Environment(\.modelContext) var modelContext
     @EnvironmentObject var userSettings: UserSettings
     var body: some View {
@@ -70,7 +71,10 @@ struct SignInView: View {
                     .padding(.top, 15)
                     .padding(.horizontal)
                     .padding(.bottom)
-                    .alert("Email ou senha incorretos", isPresented: $showAlertBadLogin) {
+                    .alert("Email is incorrect", isPresented: $showAlertBadLogin) {
+                        Button("OK", role: .cancel) { showAlertBadEmail = false }
+                    }
+                    .alert("Email or password is incorrect", isPresented: $showAlertBadLogin) {
                         Button("OK", role: .cancel) { showAlertBadLogin = false }
                     }
                     .navigationDestination(isPresented: $isHomeViewActive) {
@@ -114,6 +118,11 @@ struct SignInView: View {
     func validLogin() -> Bool {
         let fetchedUsers = fetchData()
         
+        if isValidEmail() == false {
+            showAlertBadEmail = true
+            return false
+        }
+        
         if let user = fetchedUsers.first(where: { $0.email == emailText }) {
             if user.password == hasPassword(password: passwordText) {
                 userSettings.currentUser = user
@@ -134,6 +143,13 @@ struct SignInView: View {
         let passwordHashed: String = hashed.compactMap { String(format: "%02x", $0) }.joined()
         
         return passwordHashed
+    }
+    
+    func isValidEmail() -> Bool {
+        let emailRegex = #"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"#
+        
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: emailText)
     }
     
 }

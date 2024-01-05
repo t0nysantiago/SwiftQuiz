@@ -19,7 +19,7 @@ struct SwiftQuizApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(for: [User.self, Points.self])
+                .modelContainer(for: [User.self, Points.self, Phases.self])
                 .environmentObject(userSettings)
         }
     }

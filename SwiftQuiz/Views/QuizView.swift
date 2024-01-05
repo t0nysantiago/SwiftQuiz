@@ -9,11 +9,6 @@ import SwiftUI
 
 struct QuizView: View {
     @State private var backToBeforeStart: Bool = false
-    @Binding var triviaQuestions: [TriviaQuestion]
-    @Binding var difficult: Difficult
-    @Binding var logoImage: String
-    @Environment(\.presentationMode) var presentationMode
-    @Binding var backgroundColorChoosed: Color
     @State private var currentQuestionIndex = 0
     @State private var selectedAnswerIndex: Int? = nil
     @State private var answeredCorrectly: Bool? = nil
@@ -21,6 +16,13 @@ struct QuizView: View {
     @State private var timerValue = 30
     @State private var allAnswer: [String] = []
     @State private var points: Int = 0
+    @State private var countCorrectAnswer: Int = 0
+    @Binding var triviaQuestions: [TriviaQuestion]
+    @Binding var difficult: Difficult
+    @Binding var logoImage: String
+    @Binding var backgroundColorChoosed: Color
+    @Environment(\.presentationMode) var presentationMode
+    
     
     var currentQuestion: TriviaQuestion? {
         guard triviaQuestions.indices.contains(currentQuestionIndex) else {
@@ -72,9 +74,9 @@ struct QuizView: View {
                     
                     HStack{
                         Spacer()
-                        Image("history")
+                        Image(logoImage)
                             .resizable()
-                            .frame(width: 300, height: 250)
+                            .frame(width: 280, height: 280)
                         Spacer()
                     }
                     
@@ -85,7 +87,7 @@ struct QuizView: View {
                         .bold()
                         .foregroundColor(.white)
                         .navigationDestination(isPresented: $shouldShowEndQuizView) {
-                            EndQuizView(finalPoints: $points, backgroundColorChoosed: $backgroundColorChoosed)
+                            EndQuizView(finalPoints: $points, backgroundColorChoosed: $backgroundColorChoosed, difficult: $difficult, countCorrectAnswer: $countCorrectAnswer)
                         }
                     
                     if let currentQuestion = currentQuestion {
@@ -152,7 +154,7 @@ struct QuizView: View {
                             allAnswer = allAnswers
                         }
                     } else {
-                        Text("Loading...")
+                        Text("Exit and try again!")
                             .foregroundColor(.white)
                     }
                     
@@ -179,6 +181,7 @@ struct QuizView: View {
     func earnOrLossPoints(answeredCorrectly: Bool) {
         if answeredCorrectly {
             addPoints(difficult: difficult)
+            countCorrectAnswer += countCorrectAnswer
         } else {
             removePoints(difficult: difficult)
         }
@@ -189,20 +192,20 @@ struct QuizView: View {
         case .easy:
             self.points += 10
         case .medium:
-            self.points += 30
+            self.points += 50
         case .hard:
-            self.points += 100
+            self.points += 300
         }
     }
     
     func removePoints(difficult: Difficult) {
         switch difficult {
         case .easy:
-            self.points -= 8
+            self.points -= 5
         case .medium:
             self.points -= 30
         case .hard:
-            self.points -= 105
+            self.points -= 100
         }
     }
 }

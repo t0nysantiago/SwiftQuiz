@@ -6,8 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
+    @State private var phasesOfUser: Phases?
+    @EnvironmentObject var userSettings: UserSettings
+    @Environment(\.modelContext) var modelContext
+    
     var body: some View {
         NavigationStack {
             ZStack (alignment: .leading){
@@ -18,13 +23,17 @@ struct HomeView: View {
                     TopHomeView()
                     
                     Spacer()
+                    if let userPhases = phasesOfUser {
+                        CardView(difficult: .constant(Difficult.easy), status: .constant(userPhases.easy), cardColor: .constant(Color.appGreen), gradientColor: .constant(Color.green), imageSet: .constant(randomStringImg()))
+                    }
                     
-                    CardView(difficult: .constant(Difficult.easy), status: .constant(PhaseStatus.finished), cardColor: .constant(Color.appGreen), gradientColor: .constant(Color.green), imageSet: .constant("history"))
+                    if let userPhases = phasesOfUser {
+                        CardView(difficult: .constant(Difficult.medium), status: .constant(userPhases.medium), cardColor: .constant(Color.appPurple), gradientColor: .constant(Color.blue), imageSet: .constant(randomStringImg()))
+                    }
                     
-                    CardView(difficult: .constant(Difficult.medium), status: .constant(PhaseStatus.open), cardColor: .constant(Color.appPurple), gradientColor: .constant(Color.blue), imageSet: .constant("science"))
-                    
-                    CardView(difficult: .constant(Difficult.hard), status: .constant(PhaseStatus.block), cardColor: .constant(Color.appOrange), gradientColor: .constant(Color.red), imageSet: .constant("sports"))
-                    
+                    if let userPhases = phasesOfUser {
+                        CardView(difficult: .constant(Difficult.hard), status: .constant(userPhases.hard), cardColor: .constant(Color.appOrange), gradientColor: .constant(Color.red), imageSet: .constant(randomStringImg()))
+                    }
                     Spacer()
                 }
                 .padding(.horizontal, 25)
@@ -32,12 +41,29 @@ struct HomeView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .onAppear {
+            validPhasesOfUser()
+        }
+    }
+    
+    func validPhasesOfUser(){
+        let fetchDescriptor = FetchDescriptor<Phases>()
+        var phases: [Phases] = []
+        do {
+            phases = try modelContext.fetch(fetchDescriptor)
+        } catch {
+            print("Fetch failed")
+        }
+        
+        if let userPhase = phases.first(where: { $0.userId == userSettings.currentUser?.id }) {
+            phasesOfUser = userPhase
+        }
     }
 }
 
 struct CardView: View {
     @Binding var difficult: Difficult
-    @Binding var status: PhaseStatus
+    @Binding var status: String
     @Binding var cardColor: Color
     @Binding var gradientColor: Color
     @Binding var imageSet: String
@@ -64,22 +90,24 @@ struct CardView: View {
                         
                         Image(imageSet)
                             .resizable()
-                            .frame(width: 110, height: 100)
+                            .frame(width: 100, height: 100)
                             .offset(x: 170, y: -30)
                         
                         switch status {
-                        case .open:
+                        case PhaseStatus.open.rawValue:
                             Image(systemName: "play.fill")
                                 .foregroundStyle(Color.white)
                                 .padding(.leading, 10)
-                        case .finished:
+                        case PhaseStatus.finished.rawValue:
                             Image(systemName: "checkmark")
                                 .foregroundStyle(Color.white)
                                 .padding(.leading, 8)
-                        case .block:
+                        case PhaseStatus.block.rawValue:
                             Image(systemName: "lock.fill")
                                 .foregroundStyle(Color.white)
                                 .padding(.leading, 9)
+                        default:
+                            Text("Some Error")
                         }
                     }.padding(.top, 30)
                     
@@ -87,7 +115,7 @@ struct CardView: View {
                         .font(.system(size: 18, design: .rounded))
                         .foregroundStyle(Color.appWhite)
                     
-                    Text(status.rawValue)
+                    Text(status)
                         .font(.system(size: 30, design: .rounded))
                         .bold()
                         .foregroundStyle(Color.appWhite)
@@ -95,6 +123,8 @@ struct CardView: View {
                 }.padding(.leading, 25)
             }
         }
+        .disabled(status == PhaseStatus.block.rawValue)
+        .opacity(status == PhaseStatus.block.rawValue ? 0.5 : 1.0)
     }
 }
 
@@ -141,14 +171,4 @@ struct TopHomeView: View {
             }.padding(.horizontal, 10)
         }
     }
-}
-
-enum Difficult: String, CaseIterable, Identifiable {
-    case easy = "Easy", medium = "Medium", hard = "Hard"
-    var id: Self { self }
-}
-
-enum PhaseStatus: String, CaseIterable, Identifiable {
-    case open = "Continue", finished = "Finished", block = "Blocked"
-    var id: Self { self }
 }

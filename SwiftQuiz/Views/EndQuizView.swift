@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct EndQuizView: View {
+    @State private var phasesOfUser: Phases?
     @State private var showAlertError: Bool = false
     @State private var isToBackHome: Bool = false
     @Binding var finalPoints: Int
     @Binding var backgroundColorChoosed: Color
+    @Binding var difficult: Difficult
+    @Binding var countCorrectAnswer: Int
     @Environment (\.modelContext) var modelContext
     @EnvironmentObject var userSettings: UserSettings
     var body: some View {
@@ -39,6 +43,10 @@ struct EndQuizView: View {
                             if let user = userSettings.currentUser {
                                 let newPoints = Points(userId: user.id, point: finalPoints)
                                 modelContext.insert(newPoints)
+                                print(phasesOfUser!)
+                                if let userPhase = phasesOfUser {
+                                    unlockPhases(userPhase: userPhase)
+                                }
                                 isToBackHome = true
                             } else {
                                 showAlertError = true
@@ -83,6 +91,9 @@ struct EndQuizView: View {
                             if let user = userSettings.currentUser {
                                 let newPoints = Points(userId: user.id, point: finalPoints)
                                 modelContext.insert(newPoints)
+                                if let userPhase = phasesOfUser {
+                                    unlockPhases(userPhase: userPhase)
+                                }
                                 isToBackHome = true
                             } else {
                                 showAlertError = true
@@ -111,6 +122,82 @@ struct EndQuizView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .onAppear {
+            validPhasesOfUser()
+        }
+    }
+    
+    func returnUserPoints() -> Int {
+        let fetchDescriptor = FetchDescriptor<Points>()
+        var countPoints = 0
+        var points: [Points] = []
+        do {
+            points = try modelContext.fetch(fetchDescriptor)
+        } catch {
+            print("Fetch failed")
+        }
+        
+        for point in points {
+            if point.userId == userSettings.currentUser?.id {
+                countPoints += point.point
+            }
+        }
+        
+        return countPoints
+    }
+    
+    func validPhasesOfUser() {
+        let fetchDescriptor = FetchDescriptor<Phases>()
+        var phases: [Phases] = []
+        do {
+            phases = try modelContext.fetch(fetchDescriptor)
+        } catch {
+            print("Fetch failed")
+        }
+        
+        if let userPhase = phases.first(where: { $0.userId == userSettings.currentUser?.id }) {
+            phasesOfUser = userPhase
+        }
+    }
+    
+    func fetchData() -> [Phases] {
+        let fetchDescriptor = FetchDescriptor<Phases>()
+        var phases: [Phases] = []
+        do {
+            phases = try modelContext.fetch(fetchDescriptor)
+        } catch {
+            print("Fetch failed")
+        }
+        return phases
+    }
+    
+    func updatePhases(userPhase: Phases) {
+        let fetchedPhases = fetchData()
+        if let userPhaseFound = fetchedPhases.first(where: { $0.userId == userSettings.currentUser?.id }) {
+            userPhaseFound.easy = userPhase.easy
+            userPhaseFound.medium = userPhase.medium
+            userPhaseFound.hard = userPhase.hard
+        }
+    }
+    
+    func unlockPhases(userPhase: Phases) {
+        let userPoints = returnUserPoints()
+        
+        if userPhase.easy == PhaseStatus.open.rawValue && userPoints >= 200 {
+            userPhase.medium = PhaseStatus.open.rawValue
+        } else if userPhase.medium == PhaseStatus.open.rawValue && userPoints >= 1500 {
+            userPhase.hard = PhaseStatus.open.rawValue
+        }
+        
+        if userPhase.easy == PhaseStatus.open.rawValue && countCorrectAnswer == questionsByDifficulty(for: difficult) {
+            userPhase.easy = PhaseStatus.finished.rawValue
+        } else if userPhase.medium == PhaseStatus.open.rawValue && countCorrectAnswer == questionsByDifficulty(for: difficult) {
+            userPhase.medium = PhaseStatus.finished.rawValue
+        } else if userPhase.hard == PhaseStatus.open.rawValue && countCorrectAnswer == questionsByDifficulty(for: difficult) {
+            userPhase.hard = PhaseStatus.finished.rawValue
+        }
+        
+        updatePhases(userPhase: userPhase)
     }
 }
 
@@ -128,8 +215,4 @@ struct ImageToShowEndQuizView: View {
         }
 
     }
-}
-
-#Preview {
-    EndQuizView(finalPoints: .constant(-1), backgroundColorChoosed: .constant(.appOrange))
 }

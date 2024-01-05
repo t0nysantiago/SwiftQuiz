@@ -37,7 +37,7 @@ struct BeforeStartView: View {
                         Spacer()
                         Image(logoImage)
                             .resizable()
-                            .frame(width: 300, height: 250)
+                            .frame(width: 280, height: 280)
                         Spacer()
                     }
                     Spacer()
@@ -121,14 +121,10 @@ func questionsByDifficulty(for difficult: Difficult) -> Int {
 func difficultyDescription(for difficulty: Difficult) -> String {
     switch difficulty {
     case .easy:
-        return "In this phase you will have 20 questions on general topics and to move on to the next phase you will need to get 10 questions correct."
+        return "At this stage you will have 20 questions on general topics, each worth 10 points if you get it right and if you get it wrong you will lose 5 points. To move on to the next one you will need to obtain 200 points and to achieve the difficulty completed status you will need to get all the questions correct."
     case .medium:
-        return "In this phase you will have 30 questions on general topics and to move on to the next phase you will need to get 20 questions correct."
+        return "At this stage you will have 30 questions on general topics, each worth 50 points if you get it right and if you get it wrong you will lose 30 points. To move on to the next one you will need to obtain 1500 points and to achieve the difficulty completed status you will need to get all the questions correct."
     case .hard:
-        return "In this phase you will have 50 questions on general topics and to complete this phase you will need to get 45 questions correct."
+        return "At this stage you will have 50 questions on general topics, each worth 300 points if you get it right and if you get it wrong you will lose 100 points. To achieve the difficulty completed status you will need to get all the questions correct."
     }
-}
-
-#Preview {
-    BeforeStartView(backgroundColorChoosed: .constant(Color.blue), logoImage: .constant("history"), difficult: .constant(Difficult.easy))
 }

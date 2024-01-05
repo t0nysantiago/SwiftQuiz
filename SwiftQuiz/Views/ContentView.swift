@@ -25,9 +25,9 @@ struct ContentView: View {
                         .bold()
                         .foregroundStyle(Color.appWhite)
                     
-                    SOButtonView(logoImg: .constant("applelogo"), platformName: .constant("Apple"), action: {})
+                    SOButtonView(logoImg: .constant("apple"), platformName: .constant("Apple"), action: {})
                     
-                    SOButtonView(logoImg: .constant("googlelogo"), platformName: .constant("Google"), action: {})
+                    SOButtonView(logoImg: .constant("google"), platformName: .constant("Google"), action: {})
                     
                     SOButtonView(logoImg: .constant("envelope"), platformName: .constant("Email"), action: {
                         isSignInViewActive = true

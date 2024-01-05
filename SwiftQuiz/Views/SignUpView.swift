@@ -17,6 +17,8 @@ struct SignUpView: View {
     @State private var confirmPassword: String = ""
     @State private var showAlertPasswordMismatch = false
     @State private var showAlertUserExists = false
+    @State private var showAlertBadPassword = false
+    @State private var showAlertBadEmail = false
     @Environment(\.modelContext) var modelContext
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var userSettings: UserSettings
@@ -49,14 +51,19 @@ struct SignUpView: View {
                         .padding(.bottom)
                     
                     Button(action: {
-                        if passwordsMatch() {
-                            let newUser = User(username: username, email: email, password: password)
-                            if verifyIfUsernameOrEmailExists(users: newUser) == false {
-                                addSample(user: newUser)
-                                userSettings.currentUser = newUser
-                                isHomeViewActive = true
+                        if passwordsMatchAndIsValid() {
+                            if isValidEmail() {
+                                let newUser = User(username: username, email: email, password: password)
+                                if verifyIfUsernameOrEmailExists(users: newUser) == false {
+                                    addSample(user: newUser)
+                                    addPhases(phases: Phases(userId: newUser.id))
+                                    userSettings.currentUser = newUser
+                                    isHomeViewActive = true
+                                } else {
+                                    showAlertUserExists = true
+                                }
                             } else {
-                                showAlertUserExists = true
+                                showAlertBadEmail = true
                             }
                         } else {
                             showAlertPasswordMismatch = true
@@ -76,11 +83,17 @@ struct SignUpView: View {
                     .padding(.top, 15)
                     .padding(.horizontal)
                     .padding(.bottom)
-                    .alert("Senhas não correspondem", isPresented: $showAlertPasswordMismatch) {
+                    .alert("Passwords not match", isPresented: $showAlertPasswordMismatch) {
                         Button("OK", role: .cancel) { showAlertPasswordMismatch = false }
                     }
-                    .alert("Usuário ou email já existe", isPresented: $showAlertUserExists) {
+                    .alert("User or email already exists", isPresented: $showAlertUserExists) {
                         Button("OK", role: .cancel) { showAlertUserExists = false }
+                    }
+                    .alert("Password must contain at least 8 digits", isPresented: $showAlertBadPassword) {
+                        Button("OK", role: .cancel) { showAlertBadPassword = false }
+                    }
+                    .alert("Email is incorrect", isPresented: $showAlertBadEmail) {
+                        Button("OK", role: .cancel) { showAlertBadEmail = false }
                     }
                     .navigationDestination(isPresented: $isHomeViewActive) {
                         HomeView()
@@ -113,6 +126,10 @@ struct SignUpView: View {
     func addSample(user: User) {
         modelContext.insert(user)
     }
+    
+    func addPhases(phases: Phases) {
+        modelContext.insert(phases)
+    }
 
     func fetchData() -> [User] {
         let fetchDescriptor = FetchDescriptor<User>()
@@ -139,8 +156,13 @@ struct SignUpView: View {
         return usernameExists || emailExists
     }
     
-    func passwordsMatch() -> Bool {
+    func passwordsMatchAndIsValid() -> Bool {
         var verification: Bool = false
+        
+        if password.count < 8 {
+            showAlertBadPassword = true
+            return verification
+        }
         
         if password.isEmpty || confirmPassword.isEmpty {
             return verification
@@ -149,5 +171,12 @@ struct SignUpView: View {
         verification = password == confirmPassword
         
         return verification
+    }
+    
+    func isValidEmail() -> Bool {
+        let emailRegex = #"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"#
+        
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: email)
     }
 }
