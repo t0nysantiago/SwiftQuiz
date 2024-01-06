@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import NavigationTransitions
 
 struct UserView: View {
     @State private var backToHome: Bool = false
@@ -111,6 +112,7 @@ struct UserView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .navigationTransition(.slide)
     }
     
     func fetchData() -> [User] {

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import NavigationTransitions
 
 struct EndQuizView: View {
     @State private var phasesOfUser: Phases?
@@ -125,6 +126,7 @@ struct EndQuizView: View {
         .onAppear {
             validPhasesOfUser()
         }
+        .navigationTransition(.slide)
     }
     
     func returnUserPoints() -> Int {

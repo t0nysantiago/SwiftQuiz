@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NavigationTransitions
 
 struct ContentView: View {
     @State private var isSignInViewActive = false
@@ -43,6 +44,7 @@ struct ContentView: View {
             }
         }
         .navigationBarHidden(true)
+        .navigationTransition(.slide)
     }
 }
 
@@ -127,4 +129,8 @@ struct SOButtonView: View {
             }
         }
     }
+}
+
+#Preview {
+    ContentView()
 }

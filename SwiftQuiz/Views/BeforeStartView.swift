@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NavigationTransitions
 
 struct BeforeStartView: View {
     @State private var backToHome: Bool = false
@@ -93,5 +94,6 @@ struct BeforeStartView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .navigationTransition(.slide)
     }
 }

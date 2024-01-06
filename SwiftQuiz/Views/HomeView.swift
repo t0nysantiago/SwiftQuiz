@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import NavigationTransitions
 
 struct HomeView: View {
     @State private var phasesOfUser: Phases?
@@ -44,6 +45,7 @@ struct HomeView: View {
         .onAppear {
             validPhasesOfUser()
         }
+        .navigationTransition(.slide)
     }
     
     func validPhasesOfUser(){

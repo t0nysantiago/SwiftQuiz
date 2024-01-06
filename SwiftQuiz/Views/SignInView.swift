@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import CryptoKit
+import NavigationTransitions
 
 struct SignInView: View {
     @State private var emailText: String = ""
@@ -102,6 +103,7 @@ struct SignInView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .navigationTransition(.slide)
     }
     
     func fetchData() -> [User] {

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NavigationTransitions
 
 struct QuizView: View {
     @State private var backToBeforeStart: Bool = false
@@ -174,6 +175,7 @@ struct QuizView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
+        .navigationTransition(.slide)
     }
     
     func unionAnswer(correctAnswer: String, incorrectAnswers: [String]) -> [String] {
