@@ -78,7 +78,7 @@ struct LeaderboardView: View {
                 .frame(width: UIScreen.main.bounds.width)
                 .onAppear {
                     let users = fetchUsersData()
-                    let points = fetchUsersPointsData()
+                    let points = fetchPointsData()
                     
                     let todayPoints = calculatePointsForToday(points: points)
                     let lastSevenDaysPoints = calculatePointsForLastSevenDays(points: points)
@@ -113,7 +113,7 @@ struct LeaderboardView: View {
         return users
     }
     
-    func fetchUsersPointsData() -> [Points] {
+    func fetchPointsData() -> [Points] {
         let fetchDescriptor = FetchDescriptor<Points>()
         var points: [Points] = []
         do {
@@ -122,61 +122,6 @@ struct LeaderboardView: View {
             print("Fetch failed")
         }
         return points
-    }
-    
-    func calculatePointsForToday(points: [Points]) -> [String: Int] {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        let currentDate = dateFormatter.string(from: Date())
-        
-        var todayPoints: [String: Int] = [:]
-        
-        for point in points {
-            let pointDate = dateFormatter.string(from: point.date)
-            
-            if currentDate == pointDate {
-                if let existingPoints = todayPoints[point.userId] {
-                    todayPoints[point.userId] = existingPoints + point.point
-                } else {
-                    todayPoints[point.userId] = point.point
-                }
-            }
-        }
-        
-        return todayPoints
-    }
-    
-    func calculatePointsForLastSevenDays(points: [Points]) -> [String: Int] {
-        let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
-        
-        var lastSevenDaysPoints: [String: Int] = [:]
-        
-        for point in points {
-            if point.date >= sevenDaysAgo {
-                if let existingPoints = lastSevenDaysPoints[point.userId] {
-                    lastSevenDaysPoints[point.userId] = existingPoints + point.point
-                } else {
-                    lastSevenDaysPoints[point.userId] = point.point
-                }
-            }
-        }
-        
-        return lastSevenDaysPoints
-    }
-    
-    func calculateTotalPoints(points: [Points]) -> [String: Int] {
-        var totalPoints: [String: Int] = [:]
-        
-        for point in points {
-            if let existingPoints = totalPoints[point.userId] {
-                totalPoints[point.userId] = existingPoints + point.point
-            } else {
-                totalPoints[point.userId] = point.point
-            }
-        }
-        
-        return totalPoints
     }
     
     func sortDictionary(by timing: SortTime) {
@@ -192,11 +137,6 @@ struct LeaderboardView: View {
             userDataDictionary = Dictionary(uniqueKeysWithValues: sortedData)
         }
     }
-}
-
-struct UserPointsMap {
-    var username: String
-    var totalPoints: Int
 }
 
 struct RankingView: View {
@@ -226,14 +166,4 @@ struct RankingView: View {
             }
         }
     }
-}
-
-enum SortTime: String, CaseIterable, Identifiable {
-    case today = "Today", week = "Week", alltime = "All Time"
-    var id: Self { self }
-}
-
-enum Ranking: Int, CaseIterable, Identifiable {
-    case first = 1, second, third
-    var id: Self { self }
 }

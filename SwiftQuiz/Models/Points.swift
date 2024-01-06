@@ -25,3 +25,8 @@ final public class Points {
         self.date = .now
     }
 }
+
+struct UserPointsMap {
+    var username: String
+    var totalPoints: Int
+}

@@ -23,7 +23,7 @@
 		EA7EEDB52B3D800B00151B1E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EEDB42B3D800B00151B1E /* User.swift */; };
 		EA7EEDF02B3D8E7200151B1E /* Points.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EEDEF2B3D8E7200151B1E /* Points.swift */; };
 		EAD91E502B488AE000C96F2F /* Phases.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD91E4F2B488AE000C96F2F /* Phases.swift */; };
-		EAD91E532B48A28A00C96F2F /* RandomImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD91E522B48A28A00C96F2F /* RandomImage.swift */; };
+		EAD91E552B496D6200C96F2F /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD91E542B496D6200C96F2F /* Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,7 +44,7 @@
 		EA7EEDB42B3D800B00151B1E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EA7EEDEF2B3D8E7200151B1E /* Points.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Points.swift; sourceTree = "<group>"; };
 		EAD91E4F2B488AE000C96F2F /* Phases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phases.swift; sourceTree = "<group>"; };
-		EAD91E522B48A28A00C96F2F /* RandomImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomImage.swift; sourceTree = "<group>"; };
+		EAD91E542B496D6200C96F2F /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,7 +125,7 @@
 		EAD91E512B48A27B00C96F2F /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				EAD91E522B48A28A00C96F2F /* RandomImage.swift */,
+				EAD91E542B496D6200C96F2F /* Helpers.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -208,12 +208,12 @@
 				EA7EEDA82B3C313500151B1E /* HomeView.swift in Sources */,
 				EA551F132B40B240005F4797 /* EndQuizView.swift in Sources */,
 				EAD91E502B488AE000C96F2F /* Phases.swift in Sources */,
-				EAD91E532B48A28A00C96F2F /* RandomImage.swift in Sources */,
 				EA7EEDA52B3B96BC00151B1E /* LeaderboardView.swift in Sources */,
 				EA7EED972B3B762300151B1E /* SwiftQuizApp.swift in Sources */,
 				EA7EEDAA2B3C57A800151B1E /* BeforeStartView.swift in Sources */,
 				EA7EEDAC2B3C5D9B00151B1E /* QuizView.swift in Sources */,
 				EA7EEDF02B3D8E7200151B1E /* Points.swift in Sources */,
+				EAD91E552B496D6200C96F2F /* Helpers.swift in Sources */,
 				EA551F0F2B406FD6005F4797 /* Question.swift in Sources */,
 				EA7EEDB02B3D6F5900151B1E /* SignInView.swift in Sources */,
 				EA7EEDB22B3D77F100151B1E /* SignUpView.swift in Sources */,
@@ -360,6 +360,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -393,6 +394,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

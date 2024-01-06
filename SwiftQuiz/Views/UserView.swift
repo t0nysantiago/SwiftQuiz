@@ -12,6 +12,8 @@ struct UserView: View {
     @State private var backToHome: Bool = false
     @State private var usernameText: String = ""
     @State private var emailText: String = ""
+    @State private var showAlertUserExists = false
+    @State private var showAlertBadFields = false
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.modelContext) var modelContext
     @EnvironmentObject var userSettings: UserSettings
@@ -92,7 +94,14 @@ struct UserView: View {
                         .frame(width: 300, height: 60)
                         .background(RoundedRectangle(cornerRadius: 15.0))
                         .foregroundStyle(Color.appOrange)
-                    }.padding(.top, 40)
+                    }
+                    .padding(.top, 40)
+                    .alert("Fill in the fields to update", isPresented: $showAlertBadFields) {
+                        Button("OK", role: .cancel) { showAlertBadFields = false }
+                    }
+                    .alert("Email or username already exists", isPresented: $showAlertUserExists) {
+                        Button("OK", role: .cancel) { showAlertUserExists = false }
+                    }
                     
                 }
                 .padding(.horizontal, 30)
@@ -118,39 +127,27 @@ struct UserView: View {
     func updateUser() {
         let fetchedUsers = fetchData()
         
-        if verifyIfUsernameOrEmailExists() == false {
-            if let user = fetchedUsers.first(where: { $0.id == userSettings.currentUser?.id }) {
-                if usernameText.isEmpty != true && emailText.isEmpty != true {
-                    user.username = usernameText
-                    user.email = emailText
-                } else if usernameText.isEmpty != true {
-                    user.username = usernameText
-                } else if emailText.isEmpty != true {
-                    user.email = emailText
+        if usernameText.isEmpty != true || emailText.isEmpty != true {
+            if verifyIfUsernameOrEmailExists(usersFetched: fetchedUsers, username: usernameText, email: emailText) == false {
+                if let user = fetchedUsers.first(where: { $0.id == userSettings.currentUser?.id }) {
+                    if usernameText.isEmpty != true && emailText.isEmpty != true {
+                        user.username = usernameText
+                        user.email = emailText
+                    } else if usernameText.isEmpty != true {
+                        user.username = usernameText
+                    } else if emailText.isEmpty != true {
+                        user.email = emailText
+                    }
                 }
+            } else {
+                showAlertUserExists = true
             }
+        } else {
+            showAlertBadFields = true
         }
     }
     
-    func verifyIfUsernameOrEmailExists() -> Bool {
-        let fetchedUsers = fetchData()
-        var usernameExists: Bool = false
-        var emailExists: Bool = false
-
-        if usernameText.isEmpty != true {
-            usernameExists = fetchedUsers.contains { fetchedUser in
-                return fetchedUser.username == usernameText
-            }
-        }
-
-        if emailText.isEmpty != true {
-            emailExists = fetchedUsers.contains { fetchedUser in
-                return fetchedUser.email == emailText
-            }
-        }
-
-        return usernameExists || emailExists
-    }
+    
     
 }
 

@@ -51,23 +51,7 @@ struct SignUpView: View {
                         .padding(.bottom)
                     
                     Button(action: {
-                        if passwordsMatchAndIsValid() {
-                            if isValidEmail() {
-                                let newUser = User(username: username, email: email, password: password)
-                                if verifyIfUsernameOrEmailExists(users: newUser) == false {
-                                    addSample(user: newUser)
-                                    addPhases(phases: Phases(userId: newUser.id))
-                                    userSettings.currentUser = newUser
-                                    isHomeViewActive = true
-                                } else {
-                                    showAlertUserExists = true
-                                }
-                            } else {
-                                showAlertBadEmail = true
-                            }
-                        } else {
-                            showAlertPasswordMismatch = true
-                        }
+                        createUser(username: username, email: email, password: password, confirmPassword: confirmPassword)
                     }) {
                         ZStack{
                             Text("Register")
@@ -83,17 +67,17 @@ struct SignUpView: View {
                     .padding(.top, 15)
                     .padding(.horizontal)
                     .padding(.bottom)
+                    .alert("Email is incorrect", isPresented: $showAlertBadEmail) {
+                        Button("OK", role: .cancel) { showAlertBadEmail = false }
+                    }
+                    .alert("Password must contain at least 8 digits", isPresented: $showAlertBadPassword) {
+                        Button("OK", role: .cancel) { showAlertBadPassword = false }
+                    }
                     .alert("Passwords not match", isPresented: $showAlertPasswordMismatch) {
                         Button("OK", role: .cancel) { showAlertPasswordMismatch = false }
                     }
                     .alert("User or email already exists", isPresented: $showAlertUserExists) {
                         Button("OK", role: .cancel) { showAlertUserExists = false }
-                    }
-                    .alert("Password must contain at least 8 digits", isPresented: $showAlertBadPassword) {
-                        Button("OK", role: .cancel) { showAlertBadPassword = false }
-                    }
-                    .alert("Email is incorrect", isPresented: $showAlertBadEmail) {
-                        Button("OK", role: .cancel) { showAlertBadEmail = false }
                     }
                     .navigationDestination(isPresented: $isHomeViewActive) {
                         HomeView()
@@ -142,41 +126,33 @@ struct SignUpView: View {
         return users
     }
     
-    func verifyIfUsernameOrEmailExists(users: User) -> Bool {
-        let fetchedUsers = fetchData()
-
-        let usernameExists = fetchedUsers.contains { fetchedUser in
-            return fetchedUser.username == users.username
+    func createUser(username: String, email: String, password: String, confirmPassword: String) {
+        guard isValidEmail(email: email) else {
+            showAlertBadEmail = true
+            return
         }
-
-        let emailExists = fetchedUsers.contains { fetchedUser in
-            return fetchedUser.email == users.email
-        }
-
-        return usernameExists || emailExists
-    }
-    
-    func passwordsMatchAndIsValid() -> Bool {
-        var verification: Bool = false
         
-        if password.count < 8 {
+        guard passwordIsValid(password: password) else {
             showAlertBadPassword = true
-            return verification
+            return
         }
         
-        if password.isEmpty || confirmPassword.isEmpty {
-            return verification
+        guard passwordsMatch(password: password, confirmPassword: confirmPassword) else {
+            showAlertPasswordMismatch = true
+            return
         }
         
-        verification = password == confirmPassword
+        let newUser = User(username: username, email: email, password: password)
         
-        return verification
-    }
-    
-    func isValidEmail() -> Bool {
-        let emailRegex = #"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"#
+        guard !verifyIfUsernameOrEmailExists(usersFetched: fetchData(), username: username, email: email) else {
+            showAlertUserExists = true
+            return
+        }
         
-        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-        return emailPredicate.evaluate(with: email)
+        addSample(user: newUser)
+        addPhases(phases: Phases(userId: newUser.id))
+        userSettings.currentUser = newUser
+        isHomeViewActive = true
     }
+
 }

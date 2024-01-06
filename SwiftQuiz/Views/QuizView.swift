@@ -182,30 +182,17 @@ struct QuizView: View {
         if answeredCorrectly {
             addPoints(difficult: difficult)
             countCorrectAnswer += countCorrectAnswer
-        } else {
-            removePoints(difficult: difficult)
         }
     }
     
     func addPoints(difficult: Difficult) {
         switch difficult {
         case .easy:
-            self.points += 10
+            self.points += 5
         case .medium:
+            self.points += 15
+        case .hard:
             self.points += 50
-        case .hard:
-            self.points += 300
-        }
-    }
-    
-    func removePoints(difficult: Difficult) {
-        switch difficult {
-        case .easy:
-            self.points -= 5
-        case .medium:
-            self.points -= 30
-        case .hard:
-            self.points -= 100
         }
     }
 }

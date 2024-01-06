@@ -95,36 +95,3 @@ struct BeforeStartView: View {
         .navigationBarHidden(true)
     }
 }
-
-func difficultyTitle(for difficulty: Difficult) -> String {
-    switch difficulty {
-    case .easy:
-        return "Level one"
-    case .medium:
-        return "Level two"
-    case .hard:
-        return "Level three"
-    }
-}
-
-func questionsByDifficulty(for difficult: Difficult) -> Int {
-    switch difficult {
-    case .easy:
-        return 20
-    case .medium:
-        return 30
-    case .hard:
-        return 50
-    }
-}
-    
-func difficultyDescription(for difficulty: Difficult) -> String {
-    switch difficulty {
-    case .easy:
-        return "At this stage you will have 20 questions on general topics, each worth 10 points if you get it right and if you get it wrong you will lose 5 points. To move on to the next one you will need to obtain 200 points and to achieve the difficulty completed status you will need to get all the questions correct."
-    case .medium:
-        return "At this stage you will have 30 questions on general topics, each worth 50 points if you get it right and if you get it wrong you will lose 30 points. To move on to the next one you will need to obtain 1500 points and to achieve the difficulty completed status you will need to get all the questions correct."
-    case .hard:
-        return "At this stage you will have 50 questions on general topics, each worth 300 points if you get it right and if you get it wrong you will lose 100 points. To achieve the difficulty completed status you will need to get all the questions correct."
-    }
-}

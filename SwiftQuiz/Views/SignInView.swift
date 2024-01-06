@@ -71,7 +71,7 @@ struct SignInView: View {
                     .padding(.top, 15)
                     .padding(.horizontal)
                     .padding(.bottom)
-                    .alert("Email is incorrect", isPresented: $showAlertBadLogin) {
+                    .alert("Email format is incorrect", isPresented: $showAlertBadEmail) {
                         Button("OK", role: .cancel) { showAlertBadEmail = false }
                     }
                     .alert("Email or password is incorrect", isPresented: $showAlertBadLogin) {
@@ -118,13 +118,14 @@ struct SignInView: View {
     func validLogin() -> Bool {
         let fetchedUsers = fetchData()
         
-        if isValidEmail() == false {
+        if isValidEmail(email: emailText) == false {
+            print("oiiiii")
             showAlertBadEmail = true
             return false
         }
         
         if let user = fetchedUsers.first(where: { $0.email == emailText }) {
-            if user.password == hasPassword(password: passwordText) {
+            if user.password == hashPassword(password: passwordText) {
                 userSettings.currentUser = user
                 return true
             } else {
@@ -136,20 +137,4 @@ struct SignInView: View {
             return false
         }
     }
-    
-    private func hasPassword(password: String) -> String {
-        let inputData = Data(password.utf8)
-        let hashed = SHA256.hash(data: inputData)
-        let passwordHashed: String = hashed.compactMap { String(format: "%02x", $0) }.joined()
-        
-        return passwordHashed
-    }
-    
-    func isValidEmail() -> Bool {
-        let emailRegex = #"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"#
-        
-        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-        return emailPredicate.evaluate(with: emailText)
-    }
-    
 }
