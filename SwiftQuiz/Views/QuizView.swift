@@ -48,123 +48,129 @@ struct QuizView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack (alignment: .leading) {
-                backgroundColorChoosed.ignoresSafeArea()
-                
-                VStack (alignment: .leading){
-                    HStack {
-                        Image(systemName: "chevron.backward.circle")
-                            .font(.system(size: 30))
-                            .foregroundStyle(Color.appWhite)
-                            .onTapGesture {
-                                backToBeforeStart = true
-                            }
-                            .navigationDestination(isPresented: $backToBeforeStart) {
-                                BeforeStartView(backgroundColorChoosed: $backgroundColorChoosed, logoImage: $logoImage, difficult: $difficult)
-                            }
-                        
-                        Spacer()
-                        
-                        Text("\(timerValue) seconds left")
-                            .font(.system(size: 20, weight: .bold, design: .rounded))
-                            .foregroundColor(.white)
-                    }
+            ScrollView (showsIndicators: false) {
+                ZStack (alignment: .leading) {
+                    backgroundColorChoosed.ignoresSafeArea()
                     
-                    Spacer()
-                    
-                    HStack{
-                        Spacer()
-                        Image(logoImage)
-                            .resizable()
-                            .frame(width: 280, height: 280)
-                        Spacer()
-                    }
-                    
-                    Spacer()
-                    
-                    Text("\(currentQuestionIndex + 1) / \(triviaQuestions.count)")
-                        .font(.system(size: 14, design: .rounded))
-                        .bold()
-                        .foregroundColor(.white)
-                        .navigationDestination(isPresented: $shouldShowEndQuizView) {
-                            EndQuizView(finalPoints: $points, backgroundColorChoosed: $backgroundColorChoosed, difficult: $difficult, countCorrectAnswer: $countCorrectAnswer)
+                    VStack (alignment: .leading){
+                        HStack {
+                            Image(systemName: "chevron.backward.circle")
+                                .font(.system(size: 30))
+                                .foregroundStyle(Color.appWhite)
+                                .onTapGesture {
+                                    backToBeforeStart = true
+                                }
+                                .navigationDestination(isPresented: $backToBeforeStart) {
+                                    BeforeStartView(backgroundColorChoosed: $backgroundColorChoosed, logoImage: $logoImage, difficult: $difficult)
+                                }
+                            
+                            Spacer()
+                            
+                            Text("\(timerValue) seconds left")
+                                .font(.system(size: 20, weight: .bold, design: .rounded))
+                                .foregroundColor(.white)
                         }
-                    
-                    if let currentQuestion = currentQuestion {
-                        Text(currentQuestion.question)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .font(.system(size: 28, design: .rounded))
-                            .bold()
-                            .foregroundStyle(Color.appWhite)
-                            .padding(.top, 10)
                         
-                        VStack(alignment: .leading, spacing: 10) {
-                            ForEach(0..<allAnswer.count, id: \.self) { index in
-                                Button(action: {
-                                    if answeredCorrectly == nil {
-                                        self.selectedAnswerIndex = index
-                                        
-                                        let selectedAnswer = allAnswer[index]
-                                        let isCorrect = selectedAnswer == currentQuestion.correctAnswer
-                                        
-                                        self.answeredCorrectly = isCorrect ? true : false
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                            if currentQuestionIndex + 1 < triviaQuestions.count {
-                                                if self.answeredCorrectly != nil {
-                                                    earnOrLossPoints(answeredCorrectly: answeredCorrectly!)
-                                                    self.currentQuestionIndex += 1
-                                                    self.selectedAnswerIndex = nil
-                                                    self.answeredCorrectly = nil
-                                                    self.timerValue = 30
-                                                    let currentQuestion = triviaQuestions[currentQuestionIndex]
-                                                    self.allAnswer = unionAnswer(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
+                        Spacer()
+                        
+                        HStack{
+                            Spacer()
+                            Image(logoImage)
+                                .resizable()
+                                .frame(width: 280, height: 280)
+                            Spacer()
+                        }
+                        
+                        Spacer()
+                        
+                        Text("\(currentQuestionIndex + 1) / \(triviaQuestions.count)")
+                            .font(.system(size: 14, design: .rounded))
+                            .bold()
+                            .foregroundColor(.white)
+                            .navigationDestination(isPresented: $shouldShowEndQuizView) {
+                                EndQuizView(finalPoints: $points, backgroundColorChoosed: $backgroundColorChoosed, difficult: $difficult, countCorrectAnswer: $countCorrectAnswer)
+                            }
+                        
+                        if let currentQuestion = currentQuestion {
+                            Text(currentQuestion.question)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .font(.system(size: 28, design: .rounded))
+                                .bold()
+                                .foregroundStyle(Color.appWhite)
+                                .padding(.top, 10)
+                            
+                            VStack(alignment: .leading, spacing: 10) {
+                                ForEach(0..<allAnswer.count, id: \.self) { index in
+                                    Button(action: {
+                                        if answeredCorrectly == nil {
+                                            self.selectedAnswerIndex = index
+                                            
+                                            let selectedAnswer = allAnswer[index]
+                                            let isCorrect = selectedAnswer == currentQuestion.correctAnswer
+                                            
+                                            self.answeredCorrectly = isCorrect ? true : false
+                                            
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                if currentQuestionIndex + 1 < triviaQuestions.count {
+                                                    if self.answeredCorrectly != nil {
+                                                        earnOrLossPoints(answeredCorrectly: answeredCorrectly!)
+                                                        self.currentQuestionIndex += 1
+                                                        self.selectedAnswerIndex = nil
+                                                        self.answeredCorrectly = nil
+                                                        self.timerValue = 30
+                                                        let currentQuestion = triviaQuestions[currentQuestionIndex]
+                                                        self.allAnswer = unionAnswer(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
+                                                    } else {
+                                                        earnOrLossPoints(answeredCorrectly: answeredCorrectly!)
+                                                        self.currentQuestionIndex += 1
+                                                        self.timerValue = 30
+                                                        let currentQuestion = triviaQuestions[currentQuestionIndex]
+                                                        self.allAnswer = unionAnswer(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
+                                                    }
                                                 } else {
-                                                    earnOrLossPoints(answeredCorrectly: answeredCorrectly!)
-                                                    self.currentQuestionIndex += 1
-                                                    self.timerValue = 30
-                                                    let currentQuestion = triviaQuestions[currentQuestionIndex]
-                                                    self.allAnswer = unionAnswer(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
+                                                    shouldShowEndQuizView = true
                                                 }
-                                            } else {
-                                                shouldShowEndQuizView = true
                                             }
                                         }
+                                    }) {
+                                        Text(allAnswer[index])
+                                            .foregroundColor(.black)
+                                            .font(.system(size: 18, design: .rounded))
+                                            .padding()
+                                            .frame(maxWidth: .infinity)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 15)
+                                                    .fill(
+                                                        index == selectedAnswerIndex && answeredCorrectly != nil ?
+                                                        (answeredCorrectly == true ? Color.green : Color.red) :
+                                                            Color.white
+                                                    )
+                                            )
                                     }
-                                }) {
-                                    Text(allAnswer[index])
-                                        .foregroundColor(.black)
-                                        .font(.system(size: 18, design: .rounded))
-                                        .padding()
-                                        .frame(maxWidth: .infinity)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 15)
-                                                .fill(
-                                                    index == selectedAnswerIndex && answeredCorrectly != nil ?
-                                                    (answeredCorrectly == true ? Color.green : Color.red) :
-                                                        Color.white
-                                                )
-                                        )
                                 }
                             }
+                            .onAppear {
+                                let currentQuestion = triviaQuestions[currentQuestionIndex]
+                                let allAnswers = unionAnswer(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
+                                allAnswer = allAnswers
+                            }
+                        } else {
+                            Text("Exit and try again!")
+                                .foregroundColor(.white)
                         }
-                        .onAppear {
-                            let currentQuestion = triviaQuestions[currentQuestionIndex]
-                            let allAnswers = unionAnswer(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
-                            allAnswer = allAnswers
-                        }
-                    } else {
-                        Text("Exit and try again!")
-                            .foregroundColor(.white)
+                        
+                        Spacer()
                     }
-                    
-                    Spacer()
+                    .padding(.horizontal, 30)
+                    .frame(minHeight: 0, maxHeight: .infinity)
                 }
-                .padding(.horizontal, 30)
+                .frame(width: UIScreen.main.bounds.width)
             }
             .onAppear {
                 _ = timer
             }
+            .background(backgroundColorChoosed)
+            .scrollContentBackground(.hidden)
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
