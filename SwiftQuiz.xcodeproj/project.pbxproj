@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA193F7B2B4AE9C300BBA27C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA193F7A2B4AE9C300BBA27C /* Launch Screen.storyboard */; };
 		EA35E1F62B4ABCAD00B4B265 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = EA35E1F52B4ABCAD00B4B265 /* ConfettiSwiftUI */; };
 		EA551F0F2B406FD6005F4797 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA551F0E2B406FD6005F4797 /* Question.swift */; };
 		EA551F132B40B240005F4797 /* EndQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA551F122B40B240005F4797 /* EndQuizView.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EA193F7A2B4AE9C300BBA27C /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		EA35E1F32B4AB18C00B4B265 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA551F0E2B406FD6005F4797 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		EA551F122B40B240005F4797 /* EndQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndQuizView.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				EA7EED962B3B762300151B1E /* SwiftQuizApp.swift */,
 				EA7EED9A2B3B762500151B1E /* Assets.xcassets */,
 				EA7EED9C2B3B762500151B1E /* Preview Content */,
+				EA193F7A2B4AE9C300BBA27C /* Launch Screen.storyboard */,
 			);
 			path = SwiftQuiz;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA193F7B2B4AE9C300BBA27C /* Launch Screen.storyboard in Resources */,
 				EA7EED9E2B3B762500151B1E /* Preview Assets.xcassets in Resources */,
 				EA7EED9B2B3B762500151B1E /* Assets.xcassets in Resources */,
 			);
@@ -359,6 +363,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftQuiz/Preview Content\"";
@@ -368,6 +373,7 @@
 				INFOPLIST_FILE = SwiftQuiz/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
@@ -393,6 +399,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftQuiz/Preview Content\"";
@@ -402,6 +409,7 @@
 				INFOPLIST_FILE = SwiftQuiz/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;

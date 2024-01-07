@@ -119,7 +119,6 @@ struct SignInView: View {
         let fetchedUsers = fetchData()
         
         if isValidEmail(email: emailText) == false {
-            print("oiiiii")
             showAlertBadEmail = true
             return false
         }
