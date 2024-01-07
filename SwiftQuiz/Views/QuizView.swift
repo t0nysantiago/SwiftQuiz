@@ -116,9 +116,10 @@ struct QuizView: View {
                                             
                                             self.answeredCorrectly = isCorrect ? true : false
                                             
+                                            earnPoints(answeredCorrectly: answeredCorrectly!)
+                                            
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                                 if currentQuestionIndex + 1 < triviaQuestions.count {
-                                                    earnOrLossPoints(answeredCorrectly: answeredCorrectly!)
                                                     self.currentQuestionIndex += 1
                                                     self.selectedAnswerIndex = nil
                                                     self.answeredCorrectly = nil
@@ -184,7 +185,7 @@ struct QuizView: View {
         return allAnswers
     }
     
-    func earnOrLossPoints(answeredCorrectly: Bool) {
+    func earnPoints(answeredCorrectly: Bool) {
         if answeredCorrectly {
             counter += 1
             addPoints(difficult: difficult)
