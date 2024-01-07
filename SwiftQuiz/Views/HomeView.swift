@@ -25,15 +25,15 @@ struct HomeView: View {
                     
                     Spacer()
                     if let userPhases = phasesOfUser {
-                        CardView(difficult: .constant(Difficult.easy), status: .constant(userPhases.easy), cardColor: .constant(Color.appGreen), gradientColor: .constant(Color.green), imageSet: .constant(randomStringImg()))
+                        CardView(difficult: .constant(Difficult.easy), status: .constant(userPhases.easy), cardColor: .constant(Color.appGreen), gradientColor: .constant(Color.green), imageSet: .constant(randomStringImg1()))
                     }
                     
                     if let userPhases = phasesOfUser {
-                        CardView(difficult: .constant(Difficult.medium), status: .constant(userPhases.medium), cardColor: .constant(Color.appPurple), gradientColor: .constant(Color.blue), imageSet: .constant(randomStringImg()))
+                        CardView(difficult: .constant(Difficult.medium), status: .constant(userPhases.medium), cardColor: .constant(Color.appPurple), gradientColor: .constant(Color.blue), imageSet: .constant(randomStringImg2()))
                     }
                     
                     if let userPhases = phasesOfUser {
-                        CardView(difficult: .constant(Difficult.hard), status: .constant(userPhases.hard), cardColor: .constant(Color.appOrange), gradientColor: .constant(Color.red), imageSet: .constant(randomStringImg()))
+                        CardView(difficult: .constant(Difficult.hard), status: .constant(userPhases.hard), cardColor: .constant(Color.appOrange), gradientColor: .constant(Color.red), imageSet: .constant(randomStringImg3()))
                     }
                     Spacer()
                 }

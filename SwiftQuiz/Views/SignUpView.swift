@@ -26,7 +26,7 @@ struct SignUpView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.appWhite.ignoresSafeArea()
+                Color.appOrange.ignoresSafeArea()
                 VStack {
                     
                     Spacer()
@@ -34,11 +34,11 @@ struct SignUpView: View {
                     Text("Create Account")
                         .font(.system(size: 35, design: .rounded))
                         .bold()
-                        .foregroundStyle(.appOrange)
+                        .foregroundStyle(.appWhite)
                     
                     Text("Create a new account")
                         .font(.system(size: 17, design: .rounded))
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(.appWhite)
                         .padding(.bottom, 50)
                     
                     
@@ -56,14 +56,14 @@ struct SignUpView: View {
                     }) {
                         ZStack{
                             Text("Register")
-                                .foregroundColor(.appWhite)
+                                .foregroundColor(.appOrange)
                                 .font(.system(size: 18, design: .rounded))
                                 .bold()
                                 .cornerRadius(15)
                         }
                         .frame(width: 350, height: 60)
                         .background(RoundedRectangle(cornerRadius: 15.0))
-                        .foregroundStyle(Color.appOrange)
+                        .foregroundStyle(Color.appWhite)
                     }
                     .padding(.top, 15)
                     .padding(.horizontal)
@@ -87,10 +87,10 @@ struct SignUpView: View {
                     HStack (spacing: 5) {
                         Text("Already have a account?")
                             .font(.system(size: 17, design: .rounded))
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(.appWhite)
                         Text("Login")
                             .font(.system(size: 17, design: .rounded))
-                            .foregroundStyle(.appOrange)
+                            .foregroundStyle(.appPurple)
                             .onTapGesture {
                                 backToSignIn = true
                             }
@@ -157,4 +157,8 @@ struct SignUpView: View {
         isHomeViewActive = true
     }
 
+}
+
+#Preview {
+    SignUpView()
 }

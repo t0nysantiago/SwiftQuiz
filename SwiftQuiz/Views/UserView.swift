@@ -25,7 +25,7 @@ struct UserView: View {
                     HStack{
                         Image(systemName: "chevron.backward.circle")
                             .font(.system(size: 30))
-                            .foregroundStyle(Color.appOrange)
+                            .foregroundStyle(Color.appWhite)
                             .onTapGesture {
                                 backToHome = true
                             }
@@ -37,7 +37,7 @@ struct UserView: View {
                         
                         Text("Profile")
                             .font(.system(size: 25, design: .rounded))
-                            .foregroundStyle(Color.appOrange)
+                            .foregroundStyle(Color.appWhite)
                             .bold()
                             .padding()
                         
@@ -45,7 +45,7 @@ struct UserView: View {
                         
                         Image(systemName: "door.right.hand.open")
                             .font(.system(size: 30))
-                            .foregroundStyle(Color.appOrange)
+                            .foregroundStyle(Color.appWhite)
                             .onTapGesture {
                                 presentationMode.wrappedValue.dismiss()
                             }
@@ -55,22 +55,21 @@ struct UserView: View {
                         Image("userlogo")
                             .resizable()
                             .frame(width: 200, height: 200)
-                            .foregroundColor(.appOrange)
                             .clipShape(Circle())
-                            .overlay(Circle().stroke(Color.appOrange, lineWidth: 2))
+                            .overlay(Circle().stroke(Color.appWhite, lineWidth: 2))
                             .padding(.horizontal, 5)
                         Circle()
                             .frame(width: 40)
-                            .foregroundStyle(.appOrange)
+                            .foregroundStyle(.appWhite)
                             .offset(CGSize(width: 70.0, height: 70.0))
                         
                         Circle()
                             .frame(width: 35)
-                            .foregroundStyle(.appWhite)
+                            .foregroundStyle(.appOrange)
                             .offset(CGSize(width: 70.0, height: 70.0))
                         
                         Image(systemName: "pencil")
-                            .foregroundStyle(.appOrange)
+                            .foregroundStyle(.appWhite)
                             .offset(CGSize(width: 70.0, height: 70.0))
                     }
                     
@@ -87,14 +86,14 @@ struct UserView: View {
                     }) {
                         ZStack{
                             Text("Save")
-                                .foregroundColor(.appWhite)
+                                .foregroundColor(.appOrange)
                                 .font(.system(size: 18, design: .rounded))
                                 .bold()
                                 .cornerRadius(15)
                         }
                         .frame(width: 300, height: 60)
                         .background(RoundedRectangle(cornerRadius: 15.0))
-                        .foregroundStyle(Color.appOrange)
+                        .foregroundStyle(Color.appWhite)
                     }
                     .padding(.top, 40)
                     .alert("Fill in the fields to update", isPresented: $showAlertBadFields) {
@@ -107,7 +106,7 @@ struct UserView: View {
                 }
                 .padding(.horizontal, 30)
             }
-            .background(.appWhite)
+            .background(.appOrange)
             .scrollContentBackground(.hidden)
         }
         .navigationBarBackButtonHidden(true)
@@ -168,7 +167,7 @@ struct CustomTextField: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(isError ? Color.red : (isEditing ? Color.blue : Color.appOrange), lineWidth: 2)
+                .stroke(isError ? Color.red : (isEditing ? Color.blue : Color.appWhite), lineWidth: 2)
         )
         .padding(.horizontal)
         .onChange(of: text) { oldValue, newValue in
@@ -193,7 +192,7 @@ struct CustomSecureField: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .stroke(isError ? Color.red : (isFocused ? Color.blue : Color.appOrange), lineWidth: 2)
+                .stroke(isError ? Color.red : (isFocused ? Color.blue : Color.appWhite), lineWidth: 2)
         )
         .padding(.horizontal)
         .onChange(of: text) { oldValue, newValue in

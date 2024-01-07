@@ -22,12 +22,12 @@ struct LeaderboardView: View {
         NavigationView {
             ScrollView (showsIndicators: false) {
                 ZStack{
-                    Color.appWhite.ignoresSafeArea()
+                    Color.appOrange.ignoresSafeArea()
                     VStack{
                         HStack{
                             Image(systemName: "chevron.backward.circle")
                                 .font(.system(size: 30))
-                                .foregroundStyle(Color.appOrange)
+                                .foregroundStyle(Color.appWhite)
                                 .onTapGesture {
                                     backToHome = true
                                 }
@@ -39,7 +39,7 @@ struct LeaderboardView: View {
                             
                             Text("Leaderboard")
                                 .font(.system(size: 25, design: .rounded))
-                                .foregroundStyle(Color.black)
+                                .foregroundStyle(Color.appWhite)
                                 .bold()
                                 .padding()
                             
@@ -54,13 +54,13 @@ struct LeaderboardView: View {
                                 }) {
                                     ZStack{
                                         Text(timing.rawValue)
-                                            .foregroundColor(timing == selectedTime ? Color.appWhite : Color.black)
+                                            .foregroundColor(timing == selectedTime ? Color.appOrange : Color.black)
                                             .font(.system(size: 16, design: .rounded))
                                             .cornerRadius(15)
                                     }
                                     .frame(width: 110, height: 40)
                                     .background(RoundedRectangle(cornerRadius: 15.0))
-                                    .foregroundStyle(timing == selectedTime ? Color.appOrange : Color.clear)
+                                    .foregroundStyle(timing == selectedTime ? Color.appWhite : Color.clear)
                                 }
                             }
                         }
@@ -96,7 +96,7 @@ struct LeaderboardView: View {
                     }
                 }
             }
-            .background(.appWhite)
+            .background(.appOrange)
             .scrollContentBackground(.hidden)
         }
         .navigationBarBackButtonHidden(true)
@@ -152,9 +152,8 @@ struct RankingView: View {
             Image(user.img_name)
                 .resizable()
                 .frame(width: radius, height: radius)
-                .foregroundColor(.appOrange)
                 .clipShape(Circle())
-                .overlay(Circle().stroke(Color.appOrange, lineWidth: 2))
+                .overlay(Circle().stroke(Color.appWhite, lineWidth: 2))
                 .padding(.horizontal, 5)
             
             Text(user.username)

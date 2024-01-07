@@ -157,9 +157,25 @@ func calculateTotalPoints(points: [Points]) -> [String: Int] {
     return totalPoints
 }
 
-func randomStringImg() -> String {
-    let arrayInterno = ["img1", "img2", "img3", "img4", "img5", "img6", "img7", "img8", "img9", "img10", "img11"]
+func randomStringImg1() -> String {
+    let arrayInterno = ["img6", "img7"]
     
     let indiceAleatorio = Int(arc4random_uniform(UInt32(arrayInterno.count)))
     return arrayInterno[indiceAleatorio]
 }
+
+func randomStringImg2() -> String {
+    let arrayInterno = ["img2", "img3", "img8", "img9", "img11"]
+    
+    let indiceAleatorio = Int(arc4random_uniform(UInt32(arrayInterno.count)))
+    return arrayInterno[indiceAleatorio]
+}
+
+
+func randomStringImg3() -> String {
+    let arrayInterno = ["img1", "img4", "img5", "img10"]
+    
+    let indiceAleatorio = Int(arc4random_uniform(UInt32(arrayInterno.count)))
+    return arrayInterno[indiceAleatorio]
+}
+

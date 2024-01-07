@@ -22,22 +22,22 @@ struct SignInView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.appWhite.ignoresSafeArea()
+                Color.appOrange.ignoresSafeArea()
                 VStack (alignment: .center){
                     Spacer()
                     
-                    Image(systemName: "questionmark.bubble.fill")
-                        .font(.system(size: 130))
-                        .foregroundStyle(.appOrange)
+                    Image("questionMark")
+                        .resizable()
+                        .frame(width: 300, height: 300)
                     
                     Text("Welcome Back")
                         .font(.system(size: 30, design: .rounded))
                         .bold()
-                        .foregroundStyle(.appOrange)
+                        .foregroundStyle(.appWhite)
                     
                     Text("Sign to continue")
                         .font(.system(size: 17, design: .rounded))
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(.appWhite)
                     
                     Spacer()
                     
@@ -50,7 +50,7 @@ struct SignInView: View {
                         Spacer()
                         Text("Forgot Password?")
                             .font(.system(size: 17, design: .rounded))
-                            .foregroundStyle(.appOrange)
+                            .foregroundStyle(.appPurple)
                     }.padding(.horizontal).padding(.bottom)
                     
                     Button(action: {
@@ -60,14 +60,14 @@ struct SignInView: View {
                     }) {
                         ZStack{
                             Text("Login")
-                                .foregroundColor(.appWhite)
+                                .foregroundColor(.appOrange)
                                 .font(.system(size: 18, design: .rounded))
                                 .bold()
                                 .cornerRadius(15)
                         }
                         .frame(width: 350, height: 60)
                         .background(RoundedRectangle(cornerRadius: 15.0))
-                        .foregroundStyle(Color.appOrange)
+                        .foregroundStyle(Color.appWhite)
                     }
                     .padding(.top, 15)
                     .padding(.horizontal)
@@ -85,10 +85,10 @@ struct SignInView: View {
                     HStack (spacing: 5) {
                         Text("Don't have account?")
                             .font(.system(size: 17, design: .rounded))
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(.appWhite)
                         Text("create a new account")
                             .font(.system(size: 17, design: .rounded))
-                            .foregroundStyle(.appOrange)
+                            .foregroundStyle(.appPurple)
                             .onTapGesture {
                                 isSignUpViewActive = true
                             }
@@ -139,4 +139,8 @@ struct SignInView: View {
             return false
         }
     }
+}
+
+#Preview {
+    SignInView()
 }
