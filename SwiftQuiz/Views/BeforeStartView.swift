@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import NavigationTransitions
 
 struct BeforeStartView: View {
     @State private var backToHome: Bool = false
@@ -73,7 +72,7 @@ struct BeforeStartView: View {
                         .foregroundStyle(Color.appWhite)
                     }
                     .navigationDestination(isPresented: $isQuizViewActive) {
-                        QuizView(triviaQuestions: $triviaQuestions, difficult: .constant(difficult), logoImage: $logoImage, backgroundColorChoosed: .constant(backgroundColorChoosed))
+                        QuizView(triviaQuestions: $triviaQuestions, difficult: .constant(difficult), backgroundColorChoosed: .constant(backgroundColorChoosed))
                     }
                     
                     Spacer()
@@ -94,6 +93,5 @@ struct BeforeStartView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
-        .navigationTransition(.slide)
     }
 }

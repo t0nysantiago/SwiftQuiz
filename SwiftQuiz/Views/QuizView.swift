@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import NavigationTransitions
 
 struct QuizView: View {
     @State private var backToBeforeStart: Bool = false
@@ -18,9 +17,10 @@ struct QuizView: View {
     @State private var allAnswer: [String] = []
     @State private var points: Int = 0
     @State private var countCorrectAnswer: Int = 0
+    @State private var logoImage: String = "img1"
+    @State private var counter = 0
     @Binding var triviaQuestions: [TriviaQuestion]
     @Binding var difficult: Difficult
-    @Binding var logoImage: String
     @Binding var backgroundColorChoosed: Color
     @Environment(\.presentationMode) var presentationMode
     
@@ -119,12 +119,14 @@ struct QuizView: View {
                                                         self.selectedAnswerIndex = nil
                                                         self.answeredCorrectly = nil
                                                         self.timerValue = 30
+                                                        self.logoImage = randomStringImg()
                                                         let currentQuestion = triviaQuestions[currentQuestionIndex]
                                                         self.allAnswer = unionAnswer(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
                                                     } else {
                                                         earnOrLossPoints(answeredCorrectly: answeredCorrectly!)
                                                         self.currentQuestionIndex += 1
                                                         self.timerValue = 30
+                                                        self.logoImage = randomStringImg()
                                                         let currentQuestion = triviaQuestions[currentQuestionIndex]
                                                         self.allAnswer = unionAnswer(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
                                                     }
@@ -148,6 +150,7 @@ struct QuizView: View {
                                                     )
                                             )
                                     }
+                                    .confettiCannon(counter: $counter, num: 10)
                                 }
                             }
                             .onAppear {
@@ -175,7 +178,6 @@ struct QuizView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
-        .navigationTransition(.slide)
     }
     
     func unionAnswer(correctAnswer: String, incorrectAnswers: [String]) -> [String] {
@@ -188,6 +190,7 @@ struct QuizView: View {
     
     func earnOrLossPoints(answeredCorrectly: Bool) {
         if answeredCorrectly {
+            counter += 1
             addPoints(difficult: difficult)
             countCorrectAnswer += countCorrectAnswer
         }

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftData
-import NavigationTransitions
 
 struct SignUpView: View {
     @State private var backToSignIn: Bool = false
@@ -106,7 +105,6 @@ struct SignUpView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
-        .navigationTransition(.slide)
     }
     
     func addSample(user: User) {

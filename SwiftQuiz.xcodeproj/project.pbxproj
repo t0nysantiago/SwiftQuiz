@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA35E1F62B4ABCAD00B4B265 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = EA35E1F52B4ABCAD00B4B265 /* ConfettiSwiftUI */; };
 		EA551F0F2B406FD6005F4797 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA551F0E2B406FD6005F4797 /* Question.swift */; };
 		EA551F132B40B240005F4797 /* EndQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA551F122B40B240005F4797 /* EndQuizView.swift */; };
 		EA5A5B4F2B498B0900BBC5F5 /* NavigationTransitions in Frameworks */ = {isa = PBXBuildFile; productRef = EA5A5B4E2B498B0900BBC5F5 /* NavigationTransitions */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EA35E1F32B4AB18C00B4B265 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA551F0E2B406FD6005F4797 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		EA551F122B40B240005F4797 /* EndQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndQuizView.swift; sourceTree = "<group>"; };
 		EA7EED932B3B762300151B1E /* SwiftQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -53,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA35E1F62B4ABCAD00B4B265 /* ConfettiSwiftUI in Frameworks */,
 				EA5A5B4F2B498B0900BBC5F5 /* NavigationTransitions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,6 +82,7 @@
 		EA7EED952B3B762300151B1E /* SwiftQuiz */ = {
 			isa = PBXGroup;
 			children = (
+				EA35E1F32B4AB18C00B4B265 /* Info.plist */,
 				EAD91E512B48A27B00C96F2F /* Utils */,
 				EA7EEDB32B3D800100151B1E /* Models */,
 				EA7EEDA62B3C2BF700151B1E /* Views */,
@@ -150,6 +154,7 @@
 			name = SwiftQuiz;
 			packageProductDependencies = (
 				EA5A5B4E2B498B0900BBC5F5 /* NavigationTransitions */,
+				EA35E1F52B4ABCAD00B4B265 /* ConfettiSwiftUI */,
 			);
 			productName = SwiftQuiz;
 			productReference = EA7EED932B3B762300151B1E /* SwiftQuiz.app */;
@@ -181,6 +186,7 @@
 			mainGroup = EA7EED8A2B3B762300151B1E;
 			packageReferences = (
 				EA5A5B4D2B498B0900BBC5F5 /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */,
+				EA35E1F42B4ABCAD00B4B265 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
 			productRefGroup = EA7EED942B3B762300151B1E /* Products */;
 			projectDirPath = "";
@@ -359,9 +365,9 @@
 				DEVELOPMENT_TEAM = JB46XZ574F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SwiftQuiz/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
@@ -393,9 +399,9 @@
 				DEVELOPMENT_TEAM = JB46XZ574F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SwiftQuiz/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
@@ -440,6 +446,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		EA35E1F42B4ABCAD00B4B265 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 		EA5A5B4D2B498B0900BBC5F5 /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/davdroman/swiftui-navigation-transitions.git";
@@ -451,6 +465,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EA35E1F52B4ABCAD00B4B265 /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA35E1F42B4ABCAD00B4B265 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
+		};
 		EA5A5B4E2B498B0900BBC5F5 /* NavigationTransitions */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EA5A5B4D2B498B0900BBC5F5 /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */;

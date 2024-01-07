@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftData
-import NavigationTransitions
 
 struct LeaderboardView: View {
     @State private var backToHome: Bool = false
@@ -19,7 +18,7 @@ struct LeaderboardView: View {
     @Environment(\.modelContext) var modelContext
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView (showsIndicators: false) {
                 ZStack{
                     Color.appOrange.ignoresSafeArea()
@@ -101,7 +100,6 @@ struct LeaderboardView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(true)
-        .navigationTransition(.slide)
     }
     
     func fetchUsersData() -> [User] {

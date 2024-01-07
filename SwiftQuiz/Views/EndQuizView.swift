@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SwiftData
-import NavigationTransitions
+import ConfettiSwiftUI
 
 struct EndQuizView: View {
     @State private var phasesOfUser: Phases?
@@ -24,100 +24,53 @@ struct EndQuizView: View {
             ZStack {
                 backgroundColorChoosed.ignoresSafeArea()
                 VStack {
+                    Spacer()
                     
-                    if finalPoints > 0 {
-                        Spacer()
-                        
-                        ImageToShowEndQuizView(logoName: .constant("gift"), logoColor: .constant(Color.green))
-                        
-                        Text("Congratulations!")
-                            .font(.system(size: 30, design: .rounded))
-                            .bold()
-                            .foregroundStyle(.appWhite)
-                        Text("You got \(finalPoints) points")
-                            .font(.system(size: 20, design: .rounded))
-                            .foregroundStyle(.appWhite)
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            if let user = userSettings.currentUser {
-                                let newPoints = Points(userId: user.id, point: finalPoints)
-                                modelContext.insert(newPoints)
-                                print(phasesOfUser!)
-                                if let userPhase = phasesOfUser {
-                                    unlockPhases(userPhase: userPhase)
-                                }
-                                isToBackHome = true
-                            } else {
-                                showAlertError = true
+                    ImageToShowEndQuizView()
+                    
+                    Text("Congratulations!")
+                        .font(.system(size: 30, design: .rounded))
+                        .bold()
+                        .foregroundStyle(.appWhite)
+                    Text("You got \(finalPoints) points")
+                        .font(.system(size: 20, design: .rounded))
+                        .foregroundStyle(.appWhite)
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        if let user = userSettings.currentUser {
+                            let newPoints = Points(userId: user.id, point: finalPoints)
+                            modelContext.insert(newPoints)
+                            print(phasesOfUser!)
+                            if let userPhase = phasesOfUser {
+                                unlockPhases(userPhase: userPhase)
                             }
-                        }, label: {
-                            Text("Done")
-                                .font(.system(size: 20, design: .rounded))
-                                .foregroundStyle(backgroundColorChoosed)
-                                .bold()
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 15.0)
-                                        .fill(.appWhite)
-                                )
-                        })
-                        .padding(.horizontal, 40)
-                        .alert("Erro inesperado", isPresented: $showAlertError) {
-                            Button("OK", role: .cancel) { showAlertError = false }
+                            isToBackHome = true
+                        } else {
+                            showAlertError = true
                         }
-                        .navigationDestination(isPresented: $isToBackHome) {
-                            HomeView()
-                        }
-                        
-                        Spacer()
-                    } else {
-                        Spacer()
-                        
-                        ImageToShowEndQuizView(logoName: .constant("arrow.counterclockwise.circle"), logoColor: .constant(Color.red))
-                        
-                        Text("Ohhh no!")
-                            .font(.system(size: 30, design: .rounded))
-                            .bold()
-                            .foregroundStyle(.appWhite)
-                        Text("You lost \(finalPoints) points")
+                    }, label: {
+                        Text("Done")
                             .font(.system(size: 20, design: .rounded))
-                            .foregroundStyle(.appWhite)
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            if let user = userSettings.currentUser {
-                                let newPoints = Points(userId: user.id, point: finalPoints)
-                                modelContext.insert(newPoints)
-                                if let userPhase = phasesOfUser {
-                                    unlockPhases(userPhase: userPhase)
-                                }
-                                isToBackHome = true
-                            } else {
-                                showAlertError = true
-                            }
-                        }, label: {
-                            Text("Done")
-                                .font(.system(size: 20, design: .rounded))
-                                .foregroundStyle(backgroundColorChoosed)
-                                .bold()
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 15.0)
-                                        .fill(.appWhite)
-                                )
-                        })
-                        .padding(.horizontal, 40)
-                        .alert("Erro inesperado", isPresented: $showAlertError) {
-                            Button("OK", role: .cancel) { showAlertError = false }
-                        }
-                        
-                        Spacer()
+                            .foregroundStyle(backgroundColorChoosed)
+                            .bold()
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 15.0)
+                                    .fill(.appWhite)
+                            )
+                    })
+                    .padding(.horizontal, 40)
+                    .alert("Erro inesperado", isPresented: $showAlertError) {
+                        Button("OK", role: .cancel) { showAlertError = false }
                     }
+                    .navigationDestination(isPresented: $isToBackHome) {
+                        HomeView()
+                    }
+                    
+                    Spacer()
                 }
             }
         }
@@ -126,7 +79,6 @@ struct EndQuizView: View {
         .onAppear {
             validPhasesOfUser()
         }
-        .navigationTransition(.slide)
     }
     
     func returnUserPoints() -> Int {
@@ -204,17 +156,41 @@ struct EndQuizView: View {
 }
 
 struct ImageToShowEndQuizView: View {
-    @Binding var logoName: String
-    @Binding var logoColor: Color
+    @State private var yOffset: CGFloat = 0
+    @State private var counter = 0
+    
     var body: some View {
         ZStack {
             RadialGradient(gradient: Gradient(colors: [.white, .clear]), center: .center, startRadius: 0, endRadius: 180)
                 .frame(width: 400, height: 400)
             
-            Image(systemName: logoName)
-                .font(.system(size: 150))
-                .foregroundStyle(logoColor)
+            Image("giftBox")
+                .resizable()
+                .frame(width: 200, height: 200)
+                .offset(y: yOffset)
+                .onAppear {
+                    animate()
+                    counter += 1
+                }
+                .onTapGesture {
+                    counter += 1
+                }
+                .confettiCannon(counter: $counter, num: 10)
         }
-
+    }
+    
+    func animate() {
+        withAnimation(Animation.easeInOut(duration: 0.5)) {
+            self.yOffset = -20
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            withAnimation(Animation.easeInOut(duration: 0.5)) {
+                self.yOffset = 0
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.animate()
+            }
+        }
     }
 }
