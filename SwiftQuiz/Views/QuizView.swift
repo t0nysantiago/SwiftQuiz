@@ -40,6 +40,11 @@ struct QuizView: View {
                 if currentQuestionIndex + 1 < triviaQuestions.count {
                     currentQuestionIndex += 1
                     timerValue = 30
+                    logoImage = randomStringImg()
+                    selectedAnswerIndex = nil
+                    answeredCorrectly = nil
+                    let currentQuestion = triviaQuestions[currentQuestionIndex]
+                    allAnswer = unionAnswer(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
                 } else {
                     shouldShowEndQuizView = true
                 }
@@ -113,23 +118,14 @@ struct QuizView: View {
                                             
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                                 if currentQuestionIndex + 1 < triviaQuestions.count {
-                                                    if self.answeredCorrectly != nil {
-                                                        earnOrLossPoints(answeredCorrectly: answeredCorrectly!)
-                                                        self.currentQuestionIndex += 1
-                                                        self.selectedAnswerIndex = nil
-                                                        self.answeredCorrectly = nil
-                                                        self.timerValue = 30
-                                                        self.logoImage = randomStringImg()
-                                                        let currentQuestion = triviaQuestions[currentQuestionIndex]
-                                                        self.allAnswer = unionAnswer(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
-                                                    } else {
-                                                        earnOrLossPoints(answeredCorrectly: answeredCorrectly!)
-                                                        self.currentQuestionIndex += 1
-                                                        self.timerValue = 30
-                                                        self.logoImage = randomStringImg()
-                                                        let currentQuestion = triviaQuestions[currentQuestionIndex]
-                                                        self.allAnswer = unionAnswer(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
-                                                    }
+                                                    earnOrLossPoints(answeredCorrectly: answeredCorrectly!)
+                                                    self.currentQuestionIndex += 1
+                                                    self.selectedAnswerIndex = nil
+                                                    self.answeredCorrectly = nil
+                                                    self.timerValue = 30
+                                                    self.logoImage = randomStringImg()
+                                                    let currentQuestion = triviaQuestions[currentQuestionIndex]
+                                                    self.allAnswer = unionAnswer(correctAnswer: currentQuestion.correctAnswer, incorrectAnswers: currentQuestion.incorrectAnswers)
                                                 } else {
                                                     shouldShowEndQuizView = true
                                                 }

@@ -66,10 +66,12 @@ struct LeaderboardView: View {
                         
                         Spacer(minLength: 35)
                         
-                        ForEach(userDataDictionary.sorted(by: { $0.value[selectedTime.rawValue, default: 0] > $1.value[selectedTime.rawValue, default: 0] }).prefix(10), id: \.key) { (user, points) in
-                            RankingView(user: user, points: points, selectedTime: selectedTime)
+                        ForEach(Array(userDataDictionary.sorted(by: { $0.value[selectedTime.rawValue, default: 0] > $1.value[selectedTime.rawValue, default: 0] }).prefix(10).enumerated()), id: \.1.key) { (index, element) in
+                            let (user, points) = element
+                            RankingView(user: user, points: points, position: index + 1, selectedTime: selectedTime)
                                 .padding(.horizontal, 20)
                         }
+
                         
                         Spacer()
                         
@@ -142,11 +144,15 @@ struct LeaderboardView: View {
 struct RankingView: View {
     let user: User
     let points: [String: Int]
+    let position: Int
     let selectedTime: SortTime
     @State private var radius: Double = 50.0
 
     var body: some View {
         HStack {
+            
+            Text("\(position)°")
+            
             Image(user.img_name)
                 .resizable()
                 .frame(width: radius, height: radius)
