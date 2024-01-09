@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA0790C32B4C00F700F43A27 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0790C22B4C00F700F43A27 /* ImageView.swift */; };
+		EA0790C62B4C09C500F43A27 /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0790C52B4C09C500F43A27 /* CustomTextFieldView.swift */; };
 		EA193F7B2B4AE9C300BBA27C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA193F7A2B4AE9C300BBA27C /* Launch Screen.storyboard */; };
 		EA35E1F62B4ABCAD00B4B265 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = EA35E1F52B4ABCAD00B4B265 /* ConfettiSwiftUI */; };
 		EA551F0F2B406FD6005F4797 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA551F0E2B406FD6005F4797 /* Question.swift */; };
@@ -30,6 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EA0790C22B4C00F700F43A27 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		EA0790C52B4C09C500F43A27 /* CustomTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldView.swift; sourceTree = "<group>"; };
 		EA193F7A2B4AE9C300BBA27C /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		EA35E1F32B4AB18C00B4B265 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA551F0E2B406FD6005F4797 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
@@ -65,6 +69,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA0790C42B4C099000F43A27 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				EA0790C22B4C00F700F43A27 /* ImageView.swift */,
+				EA0790C52B4C09C500F43A27 /* CustomTextFieldView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		EA7EED8A2B3B762300151B1E = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +97,7 @@
 		EA7EED952B3B762300151B1E /* SwiftQuiz */ = {
 			isa = PBXGroup;
 			children = (
+				EA0790C42B4C099000F43A27 /* Components */,
 				EA35E1F32B4AB18C00B4B265 /* Info.plist */,
 				EAD91E512B48A27B00C96F2F /* Utils */,
 				EA7EEDB32B3D800100151B1E /* Models */,
@@ -226,11 +240,13 @@
 				EA7EED972B3B762300151B1E /* SwiftQuizApp.swift in Sources */,
 				EA7EEDAA2B3C57A800151B1E /* BeforeStartView.swift in Sources */,
 				EA7EEDAC2B3C5D9B00151B1E /* QuizView.swift in Sources */,
+				EA0790C32B4C00F700F43A27 /* ImageView.swift in Sources */,
 				EA7EEDF02B3D8E7200151B1E /* Points.swift in Sources */,
 				EAD91E552B496D6200C96F2F /* Helpers.swift in Sources */,
 				EA551F0F2B406FD6005F4797 /* Question.swift in Sources */,
 				EA7EEDB02B3D6F5900151B1E /* SignInView.swift in Sources */,
 				EA7EEDB22B3D77F100151B1E /* SignUpView.swift in Sources */,
+				EA0790C62B4C09C500F43A27 /* CustomTextFieldView.swift in Sources */,
 				EA7EEDB52B3D800B00151B1E /* User.swift in Sources */,
 				EA7EEDAE2B3CFB1700151B1E /* UserView.swift in Sources */,
 			);

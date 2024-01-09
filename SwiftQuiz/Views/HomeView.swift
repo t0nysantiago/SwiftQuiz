@@ -62,6 +62,7 @@ struct HomeView: View {
 }
 
 struct CardView: View {
+    @State private var showAlert = false
     @Binding var difficult: Difficult
     @Binding var status: String
     @Binding var cardColor: Color
@@ -123,8 +124,20 @@ struct CardView: View {
                 }.padding(.leading, 25)
             }
         }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Blocked Access"),
+                message: Text("This phase is currently locked."),
+                dismissButton: .default(Text("OK"))
+            )
+        }
         .disabled(status == PhaseStatus.block.rawValue)
         .opacity(status == PhaseStatus.block.rawValue ? 0.5 : 1.0)
+        .onTapGesture {
+            if status == PhaseStatus.block.rawValue {
+                showAlert = true
+            }
+        }
     }
 }
 

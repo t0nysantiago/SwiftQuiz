@@ -12,8 +12,11 @@ struct UserView: View {
     @State private var backToHome: Bool = false
     @State private var usernameText: String = ""
     @State private var emailText: String = ""
+    @State private var imageURL: String = ""
     @State private var showAlertUserExists = false
     @State private var showAlertBadFields = false
+    @State private var showAlertUserUpdated = false
+    @State private var showChangeImg = false
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.modelContext) var modelContext
     @EnvironmentObject var userSettings: UserSettings
@@ -50,27 +53,7 @@ struct UserView: View {
                             }
                     }
                     
-                    ZStack{
-                        Image("userlogo")
-                            .resizable()
-                            .frame(width: 200, height: 200)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color.appWhite, lineWidth: 2))
-                            .padding(.horizontal, 5)
-                        Circle()
-                            .frame(width: 40)
-                            .foregroundStyle(.appWhite)
-                            .offset(CGSize(width: 70.0, height: 70.0))
-                        
-                        Circle()
-                            .frame(width: 35)
-                            .foregroundStyle(.appOrange)
-                            .offset(CGSize(width: 70.0, height: 70.0))
-                        
-                        Image(systemName: "pencil")
-                            .foregroundStyle(.appWhite)
-                            .offset(CGSize(width: 70.0, height: 70.0))
-                    }
+                    ImageView(radius: .constant(200), imageURLString: .constant(userSettings.currentUser?.img_name))
                     
                     Text(userSettings.currentUser?.username ?? "Username")
                         .font(.system(size: 24, design: .rounded))
@@ -79,9 +62,11 @@ struct UserView: View {
                     
                     CustomTextField(text: $usernameText, placeholder: "Username")
                     CustomTextField(text: $emailText, placeholder: "Email")
+                    CustomTextField(text: $imageURL, placeholder: "Image URL")
                     
                     Button(action: {
                         updateUser()
+                        showAlertUserUpdated = true
                     }) {
                         ZStack{
                             Text("Save")
@@ -101,9 +86,12 @@ struct UserView: View {
                     .alert("Email or username already exists", isPresented: $showAlertUserExists) {
                         Button("OK", role: .cancel) { showAlertUserExists = false }
                     }
+                    .alert("User Updated", isPresented: $showAlertUserUpdated) {
+                        Button("OK", role: .cancel) { showAlertUserUpdated = false ; backToHome = true }
+                    }
                     
                 }
-                .padding(.horizontal, 30)
+                .padding(.horizontal)
             }
             .background(.appOrange)
             .scrollContentBackground(.hidden)
@@ -126,75 +114,33 @@ struct UserView: View {
     func updateUser() {
         let fetchedUsers = fetchData()
         
-        if usernameText.isEmpty != true || emailText.isEmpty != true {
-            if verifyIfUsernameOrEmailExists(usersFetched: fetchedUsers, username: usernameText, email: emailText) == false {
-                if let user = fetchedUsers.first(where: { $0.id == userSettings.currentUser?.id }) {
-                    if usernameText.isEmpty != true && emailText.isEmpty != true {
-                        user.username = usernameText
-                        user.email = emailText
-                    } else if usernameText.isEmpty != true {
-                        user.username = usernameText
-                    } else if emailText.isEmpty != true {
-                        user.email = emailText
-                    }
-                }
-            } else {
-                showAlertUserExists = true
-            }
-        } else {
+        guard let currentUserID = userSettings.currentUser?.id else { return }
+        guard let currentUserIndex = fetchedUsers.firstIndex(where: { $0.id == currentUserID }) else { return }
+        let currentUser = fetchedUsers[currentUserIndex]
+        
+        guard !usernameText.isEmpty || !emailText.isEmpty || !imageURL.isEmpty else {
             showAlertBadFields = true
+            return
         }
-    }
-    
-    
-    
-}
-
-struct CustomTextField: View {
-    @Binding var text: String
-    var placeholder: String
-    @State private var isEditing = false
-    @State private var isError = false
-    
-    var body: some View {
-        TextField(placeholder, text: $text, onEditingChanged: { editing in
-            self.isEditing = editing
-            self.isError = false
-        })
-        .autocapitalization(.none)
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(isError ? Color.red : (isEditing ? Color.blue : Color.appWhite), lineWidth: 2)
-        )
-        .padding(.horizontal)
-        .onChange(of: text) { oldValue, newValue in
-            isError = newValue.isEmpty
+        
+        if verifyIfUsernameOrEmailExists(usersFetched: fetchedUsers, username: usernameText, email: emailText) {
+            showAlertUserExists = true
+            return
         }
-    }
-}
-
-struct CustomSecureField: View {
-    @Binding var text: String
-    var placeholder: String
-    @State private var isError = false
-    @FocusState private var isFocused: Bool
-
-    var body: some View {
-        SecureField(placeholder, text: $text) {
-            self.isError = text.isEmpty
+        
+        if !usernameText.isEmpty {
+            currentUser.username = usernameText
+            usernameText = ""
         }
-        .autocapitalization(.none)
-        .focused($isFocused)
-        .submitLabel(.done)
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(isError ? Color.red : (isFocused ? Color.blue : Color.appWhite), lineWidth: 2)
-        )
-        .padding(.horizontal)
-        .onChange(of: text) { oldValue, newValue in
-            isError = newValue.isEmpty
+        
+        if !emailText.isEmpty {
+            currentUser.email = emailText
+            emailText = ""
+        }
+        
+        if !imageURL.isEmpty {
+            currentUser.img_name = imageURL
+            imageURL = ""
         }
     }
 }

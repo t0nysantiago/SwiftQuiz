@@ -153,12 +153,7 @@ struct RankingView: View {
             
             Text("\(position)°")
             
-            Image(user.img_name)
-                .resizable()
-                .frame(width: radius, height: radius)
-                .clipShape(Circle())
-                .overlay(Circle().stroke(Color.appWhite, lineWidth: 2))
-                .padding(.horizontal, 5)
+            ImageView(radius: .constant(radius), imageURLString: .constant(user.img_name))
             
             Text(user.username)
             
