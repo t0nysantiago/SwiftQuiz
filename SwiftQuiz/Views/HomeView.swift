@@ -63,13 +63,14 @@ struct HomeView: View {
 
 struct CardView: View {
     @State private var showAlert = false
+    @State private var isCardClicked = false
     @Binding var difficult: Difficult
     @Binding var status: String
     @Binding var cardColor: Color
     @Binding var gradientColor: Color
     @Binding var imageSet: String
     var body: some View {
-        NavigationLink(destination: BeforeStartView(backgroundColorChoosed: .constant(cardColor), logoImage: .constant(imageSet), difficult: .constant(difficult))) {
+        NavigationStack {
             ZStack (alignment: .leading) {
                 Rectangle()
                     .frame(width: 330, height: 150)
@@ -123,6 +124,9 @@ struct CardView: View {
                     
                 }.padding(.leading, 25)
             }
+            .onTapGesture {
+                isCardClicked = true
+            }
         }
         .alert(isPresented: $showAlert) {
             Alert(
@@ -137,6 +141,9 @@ struct CardView: View {
             if status == PhaseStatus.block.rawValue {
                 showAlert = true
             }
+        }
+        .navigationDestination(isPresented: $isCardClicked) {
+            BeforeStartView(backgroundColorChoosed: .constant(cardColor), logoImage: .constant(imageSet), difficult: .constant(difficult))
         }
     }
 }
