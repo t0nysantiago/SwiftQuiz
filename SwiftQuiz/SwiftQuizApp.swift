@@ -8,9 +8,6 @@
 import SwiftUI
 import SwiftData
 
-class UserSettings: ObservableObject {
-    @Published var currentUser: User?
-}
 
 @main
 struct SwiftQuizApp: App {

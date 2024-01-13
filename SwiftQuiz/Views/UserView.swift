@@ -66,7 +66,6 @@ struct UserView: View {
                     
                     Button(action: {
                         updateUser()
-                        showAlertUserUpdated = true
                     }) {
                         ZStack{
                             Text("Save")
@@ -142,5 +141,7 @@ struct UserView: View {
             currentUser.img_name = imageURL
             imageURL = ""
         }
+        
+        showAlertUserUpdated = true
     }
 }

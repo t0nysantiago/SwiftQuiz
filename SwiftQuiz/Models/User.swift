@@ -36,3 +36,7 @@ final public class User {
         self.password = hashed.compactMap { String(format: "%02x", $0) }.joined()
     }
 }
+
+class UserSettings: ObservableObject {
+    @Published var currentUser: User?
+}

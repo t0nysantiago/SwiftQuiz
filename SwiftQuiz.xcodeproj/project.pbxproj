@@ -13,7 +13,6 @@
 		EA35E1F62B4ABCAD00B4B265 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = EA35E1F52B4ABCAD00B4B265 /* ConfettiSwiftUI */; };
 		EA551F0F2B406FD6005F4797 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA551F0E2B406FD6005F4797 /* Question.swift */; };
 		EA551F132B40B240005F4797 /* EndQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA551F122B40B240005F4797 /* EndQuizView.swift */; };
-		EA5A5B4F2B498B0900BBC5F5 /* NavigationTransitions in Frameworks */ = {isa = PBXBuildFile; productRef = EA5A5B4E2B498B0900BBC5F5 /* NavigationTransitions */; };
 		EA7EED972B3B762300151B1E /* SwiftQuizApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EED962B3B762300151B1E /* SwiftQuizApp.swift */; };
 		EA7EED992B3B762300151B1E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7EED982B3B762300151B1E /* ContentView.swift */; };
 		EA7EED9B2B3B762500151B1E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA7EED9A2B3B762500151B1E /* Assets.xcassets */; };
@@ -62,7 +61,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA35E1F62B4ABCAD00B4B265 /* ConfettiSwiftUI in Frameworks */,
-				EA5A5B4F2B498B0900BBC5F5 /* NavigationTransitions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,7 +168,6 @@
 			);
 			name = SwiftQuiz;
 			packageProductDependencies = (
-				EA5A5B4E2B498B0900BBC5F5 /* NavigationTransitions */,
 				EA35E1F52B4ABCAD00B4B265 /* ConfettiSwiftUI */,
 			);
 			productName = SwiftQuiz;
@@ -202,7 +199,6 @@
 			);
 			mainGroup = EA7EED8A2B3B762300151B1E;
 			packageReferences = (
-				EA5A5B4D2B498B0900BBC5F5 /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */,
 				EA35E1F42B4ABCAD00B4B265 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
 			productRefGroup = EA7EED942B3B762300151B1E /* Products */;
@@ -480,14 +476,6 @@
 				minimumVersion = 1.1.0;
 			};
 		};
-		EA5A5B4D2B498B0900BBC5F5 /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/davdroman/swiftui-navigation-transitions.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.13.3;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -495,11 +483,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EA35E1F42B4ABCAD00B4B265 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
 			productName = ConfettiSwiftUI;
-		};
-		EA5A5B4E2B498B0900BBC5F5 /* NavigationTransitions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EA5A5B4D2B498B0900BBC5F5 /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */;
-			productName = NavigationTransitions;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
